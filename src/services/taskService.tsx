@@ -2,44 +2,41 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions/v2";
 import * as logger from "firebase-functions/logger";
 
+import { Family, SuggestedTask, Task, User } from '../types';
+import { Request, Response } from 'express'; // Import Request and Response
 import { collection, getDocs, query, where } from 'firebase/firestore';
-
-// Fetching family tasks
-// src/services/taskService.ts
-import { db } from './firebase';
 
 // Initialize Firebase Admin SDK
 admin.initializeApp();
+const db = admin.firestore(); // Use the Firestore instance from admin
 
-
-export const fetchFamilyTasks = functions.https.onCall(async (data, context) => {
-    // Check for authenticated user
-    if (!context.auth) {
-        throw new functions.https.HttpsError('unauthenticated', 'You must be logged in to fetch tasks.');
-    }
-
-    const { familyId } = data;
+// Fetching family tasks
+export const fetchFamilyTasks = async (req: Request, res: Response) => {
+    const familyId = req.query.familyId as string; // Cast to string
     if (!familyId) {
-        throw new functions.https.HttpsError('invalid-argument', 'Family ID is required');
+        res.status(400).send('Missing familyId');
+        return;
     }
+
+    // Use Admin SDK's Firestore methods
+    const tasksRef = db.collection('Tasks'); // Get the collection reference
+    const q = tasksRef.where('family_id', '==', familyId); // Create the query
 
     try {
-        const tasksSnapshot = await admin.firestore().collection('Tasks')
-            .where('family_id', '==', familyId).get();
-
-        const tasks = tasksSnapshot.docs.map(doc => ({
+        const querySnapshot = await q.get(); // Execute the query
+        const tasks = querySnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data(),
         }));
-
-        return { tasks };
+        res.status(200).json(tasks); // Return the tasks
     } catch (error) {
-        throw new functions.https.HttpsError('unknown', 'Failed to fetch tasks', error);
+        logger.error('Error fetching family tasks:', error);
+        res.status(500).send('Error fetching tasks');
     }
-});
+};
 
 // Adding a new task
-export const addTask = functions.https.onRequest(async (req, res) => {
+export const addTask = functions.https.onRequest(async (req: Request, res: Response) => {
     const { family_id, name, description } = req.body;
 
     if (!family_id || !name || !description) {
@@ -48,7 +45,7 @@ export const addTask = functions.https.onRequest(async (req, res) => {
     }
 
     try {
-        const newTask = await admin.firestore().collection('Tasks').add({
+        const newTask = await db.collection('Tasks').add({
             family_id,
             name,
             description,
@@ -62,7 +59,7 @@ export const addTask = functions.https.onRequest(async (req, res) => {
 });
 
 // Updating a task's status
-export const updateTaskStatus = functions.https.onRequest(async (req, res) => {
+export const updateTaskStatus = functions.https.onRequest(async (req: Request, res: Response) => {
     const { taskId, status } = req.body;
 
     if (!taskId || !status) {
@@ -71,7 +68,7 @@ export const updateTaskStatus = functions.https.onRequest(async (req, res) => {
     }
 
     try {
-        await admin.firestore().collection('Tasks').doc(taskId).update({ status });
+        await db.collection('Tasks').doc(taskId).update({ status });
         res.status(200).send('Task updated successfully');
     } catch (error) {
         logger.error('Error updating task:', error);
@@ -80,9 +77,9 @@ export const updateTaskStatus = functions.https.onRequest(async (req, res) => {
 });
 
 // Fetching suggested tasks
-export const getSuggestedTasks = functions.https.onRequest(async (req, res) => {
+export const getSuggestedTasks = functions.https.onRequest(async (req: Request, res: Response) => {
     try {
-        const suggestedTasksSnapshot = await admin.firestore().collection('SuggestedTasks').get();
+        const suggestedTasksSnapshot = await db.collection('SuggestedTasks').get();
         const suggestedTasks = suggestedTasksSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         res.status(200).json(suggestedTasks);
     } catch (error) {
