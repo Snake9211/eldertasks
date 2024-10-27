@@ -1,20 +1,5 @@
 {
-  "extends": "./tsconfig.json",  // Optional: If you have a base tsconfig.json
-  "compilerOptions": {
-    "target": "ES2018",  // Adjust according to your needs
-    "module": "commonjs", // Use "commonjs" for Node.js
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "jsx": "react" // If you're using React; otherwise, you can omit this
-  },
   "include": [
-    "src/**/*",  // Include all TypeScript files in the src folder
-    ".eslintrc.js" // If you want to keep this for some reason
-  ],
-  "exclude": [
-    "node_modules",
-    "lib" // Exclude built files
+    ".eslintrc.js"
   ]
 }

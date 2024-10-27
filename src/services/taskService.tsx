@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions/v2";
 import * as logger from "firebase-functions/logger";
 
-import { Family, SuggestedTask, Task, User } from '../types';
+import { Family, FirestoreUser, SuggestedTask, Task } from '../types';
 import { Request, Response } from 'express'; // Import Request and Response
 import { collection, getDocs, query, where } from 'firebase/firestore';
 

@@ -1,65 +1,64 @@
-// AddTaskForm.tsx
 import React, { useState } from 'react';
+import { getFunctions, httpsCallable } from 'firebase/functions';
+
+import { useUser } from '../context/UserContext';
 
 const AddTaskForm: React.FC = () => {
-    const [taskName, setTaskName] = useState('');
-    const [taskDescription, setTaskDescription] = useState('');
-    const [taskStatus, setTaskStatus] = useState('Pending');
+  const [taskName, setTaskName] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
+  const [taskStatus, setTaskStatus] = useState('Pending');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { currentUser } = useUser();
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Add your logic to save the task to the database here
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
 
-        // Reset the form
-        setTaskName('');
-        setTaskDescription('');
-        setTaskStatus('Pending');
+    try {
+      if (!currentUser) {
+        setErrorMessage('You must be logged in to add a task.');
+        return;
+      }
 
-        alert('Task added successfully!');
-    };
+      const familyId = currentUser.familyId;
+      if (!familyId) {
+        setErrorMessage('Unable to determine your family ID.');
+        return;
+      }
 
-    return (
-        <div className="container">
-            <h1>Add New Task</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="taskName" className="form-label">Task Name</label>
-                    <input
-                        type="text"
-                        id="taskName"
-                        className="form-control"
-                        value={taskName}
-                        onChange={(e) => setTaskName(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="taskDescription" className="form-label">Description</label>
-                    <textarea
-                        id="taskDescription"
-                        className="form-control"
-                        value={taskDescription}
-                        onChange={(e) => setTaskDescription(e.target.value)}
-                        required
-                    ></textarea>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="taskStatus" className="form-label">Status</label>
-                    <select
-                        id="taskStatus"
-                        className="form-select"
-                        value={taskStatus}
-                        onChange={(e) => setTaskStatus(e.target.value)}
-                    >
-                        <option value="Pending">Pending</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Completed">Completed</option>
-                    </select>
-                </div>
-                <button type="submit" className="btn btn-success">Add Task</button>
-            </form>
-        </div>
-    );
+      const functions = getFunctions();
+      const addTask = httpsCallable(functions, 'addTask');
+
+      const result = await addTask({
+        name: taskName,
+        description: taskDescription,
+        familyId: familyId,
+        status: taskStatus,
+      });
+
+      console.log('Task added successfully:', result);
+
+      // Reset the form
+      setTaskName('');
+      setTaskDescription('');
+      setTaskStatus('Pending');
+
+      alert('Task added successfully!');
+    } catch (error: any) {
+      console.error('Error adding task:', error);
+      setErrorMessage(error.message || 'Failed to add task. Please try again.');
+    }
+  };
+
+  return (
+    <div className="container">
+      <h1>Add New Task</h1>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      <form onSubmit={handleSubmit}>
+        {/* ... your form fields as before ... */}
+      </form>
+    </div>
+  );
 };
 
 export default AddTaskForm;

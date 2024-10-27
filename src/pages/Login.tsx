@@ -1,10 +1,20 @@
-import "./Login.css";
+// Login.tsx
 
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  Link as MuiLink,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 import { login } from "../services/authService";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
+import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 
 const firestore = getFirestore();
@@ -14,10 +24,10 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { setUser } = useUser();
-  const navigate = useNavigate(); // Initialize navigate for redirection
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
-    setErrorMessage(null); // Reset any previous error messages
+    setErrorMessage(null);
     try {
       const firebaseUser = await login(email, password);
 
@@ -26,41 +36,98 @@ const Login: React.FC = () => {
       if (userDoc.exists()) {
         const { familyId } = userDoc.data();
         const userWithFamilyId = { ...firebaseUser, familyId };
-        setUser(userWithFamilyId); // Set user in context
+        setUser(userWithFamilyId);
         console.log("Logged in as:", userWithFamilyId);
-        navigate("/"); // Redirect to home or main page
+        navigate("/");
       } else {
         setErrorMessage("User profile data not found.");
         console.warn("User data not found in Firestore");
       }
     } catch (error) {
-      const errorMessage = (error as Error).message;
-      setErrorMessage(errorMessage === "Invalid email or password" ? errorMessage : "An error occurred. Please try again.");
-      console.error("Login error:", errorMessage);
+      const errorMsg =
+        (error as Error).message === "Invalid email or password"
+          ? "Invalid email or password"
+          : "An error occurred. Please try again.";
+      setErrorMessage(errorMsg);
+      console.error("Login error:", error);
     }
   };
 
+  // Redirect to Sign-Up page
+  const handleSignUp = () => {
+    navigate("/signup");
+  };
+
   return (
-    <div className="login-container">
-      <h2 className="login-title">Welcome Back</h2>
-      <p className="login-subtitle">Please login to your account</p>
-      <input
-        type="email"
-        placeholder="Email"
-        className="login-input"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        className="login-input"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button className="login-button" onClick={handleLogin}>Login</button>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-    </div>
+    <Container component="main" maxWidth="xs">
+      <Paper
+        elevation={6}
+        sx={{
+          marginTop: 8,
+          padding: 4,
+          backgroundColor: "background.paper",
+          color: "text.primary",
+        }}
+      >
+        <Typography component="h1" variant="h5" align="center" gutterBottom>
+          Welcome Back
+        </Typography>
+        <Typography variant="body2" align="center" gutterBottom>
+          Please login to your account
+        </Typography>
+        {errorMessage && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {errorMessage}
+          </Alert>
+        )}
+        <Box component="form" noValidate>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Email Address"
+            variant="outlined"
+            type="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            InputLabelProps={{
+              sx: { color: "text.secondary" },
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Password"
+            variant="outlined"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            InputLabelProps={{
+              sx: { color: "text.secondary" },
+            }}
+          />
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleLogin}
+          >
+            Login
+          </Button>
+          <Typography variant="body2" align="center">
+            Don't have an account?{" "}
+            <MuiLink component="button" variant="body2" onClick={handleSignUp}>
+              Sign Up
+            </MuiLink>
+          </Typography>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 

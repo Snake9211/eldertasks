@@ -1,69 +1,131 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import { addDoc, collection } from 'firebase/firestore';
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
+import { getFunctions, httpsCallable } from "firebase/functions";
 
-import { db } from '../firebase'; // Update the path as needed
+import { AssignmentTurnedIn } from "@mui/icons-material";
+import { useUser } from "../context/UserContext";
 
-interface AddTaskProps {
-  onTaskAdded: (taskName: string) => void;
-}
+type AddTaskProps = {
+  onTaskAdded?: (taskName: string) => void;
+};
 
 const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded }) => {
-  const [taskName, setTaskName] = useState('');
-  const [error, setError] = useState('');
+  const { currentUser } = useUser();
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
-  const handleTaskNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTaskName(e.target.value);
-    setError(''); // Clear any previous errors
-  };
+  const handleAddTask = async () => {
+    setError(null);
+    setSuccess(false);
 
-  const handleNextClick = async () => {
-    if (taskName.trim() === '') {
-      setError('Please enter a task name.');
+    if (!name || !description) {
+      setError("Task name and description are required.");
       return;
     }
 
+    console.log("Attempting to add task:", {
+      name,
+      description,
+      familyId: currentUser?.familyId,
+    });
+
     try {
-      // Save the task to Firestore
-      await addDoc(collection(db, 'tasks'), { name: taskName });
+      const functions = getFunctions();
+      const addTask = httpsCallable(functions, "addTask");
 
-      // Call the onTaskAdded function to update the tasks in the menu
-      onTaskAdded(taskName);
+      const result = await addTask({
+        name,
+        description,
+        familyId: currentUser?.familyId,
+      });
 
-      // Clear the input field after submission
-      setTaskName('');
+      console.log("Task added successfully:", result);
+
+      setSuccess(true);
+      setName("");
+      setDescription("");
+
+      if (onTaskAdded) {
+        onTaskAdded(name);
+      }
     } catch (error) {
-      console.error("Error adding task to Firestore: ", error);
+      console.error("Error adding task:", error);
       setError("Failed to add task. Please try again.");
     }
   };
 
   return (
-    <Box style={{ padding: '20px' }}>
-      <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '10px' }}>Add a new task</Typography>
-      <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-        Give your task a clear, descriptive title.
-      </Typography>
-      <TextField
-        label="Example: Hang new mirror in guest room"
-        fullWidth
-        variant="outlined"
-        value={taskName}
-        onChange={handleTaskNameChange}
-        error={!!error}
-        helperText={error}
-        style={{ margin: '10px 0' }}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        onClick={handleNextClick}
-        style={{ marginTop: '20px' }}
+    <Container maxWidth="sm" sx={{ mt: 8 }}>
+      <Paper
+        elevation={6}
+        sx={{
+          p: 4,
+          backgroundColor: "background.paper",
+          color: "text.primary",
+        }}
       >
-        Next
-      </Button>
-    </Box>
+        <Box display="flex" alignItems="center" mb={2}>
+          <AssignmentTurnedIn sx={{ mr: 1, fontSize: 40, color: "primary.main" }} />
+          <Typography variant="h4">Add a New Task</Typography>
+        </Box>
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+        {success && (
+          <Alert severity="success" sx={{ mb: 2 }}>
+            Task added successfully!
+          </Alert>
+        )}
+
+        <TextField
+          label="Task Name"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          InputLabelProps={{
+            sx: { color: "text.secondary" },
+          }}
+        />
+        <TextField
+          label="Description"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          multiline
+          rows={4}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          InputLabelProps={{
+            sx: { color: "text.secondary" },
+          }}
+        />
+
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 3 }}
+          onClick={handleAddTask}
+        >
+          Add Task
+        </Button>
+      </Paper>
+    </Container>
   );
 };
 

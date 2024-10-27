@@ -1,92 +1,72 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions/v2";
-import * as logger from "firebase-functions/logger";
+import * as functions from "firebase-functions";
 
-import { collection, getDocs, query, where } from 'firebase/firestore';
-
-// Fetching family tasks
-// src/services/taskService.ts
-import { db } from './firebase';
-
-// Initialize Firebase Admin SDK
 admin.initializeApp();
 
+interface AddTaskData {
+  name: string;
+  description: string;
+  familyId: string;
+  status?: string;
+}
 
-export const fetchFamilyTasks = functions.https.onCall(async (data, context) => {
+export const addTask = functions.https.onCall(
+  async (request: functions.https.CallableRequest<AddTaskData>):
+   Promise<{ id: string }> => {
+    const data = request.data;
+    const auth = request.auth;
+
+    // Log the input data and auth context for debugging
+    functions.logger.info("Function addTask called with data:", data);
+    functions.logger.info("Authentication context:", auth);
+
     // Check for authenticated user
-    if (!context.auth) {
-        throw new functions.https.HttpsError('unauthenticated', 'You must be logged in to fetch tasks.');
+    if (!auth) {
+      functions.logger.error("User not authenticated");
+      throw new functions.https.HttpsError(
+        "unauthenticated", "You must be logged in to add a task.");
     }
 
-    const { familyId } = data;
-    if (!familyId) {
-        throw new functions.https.HttpsError('invalid-argument', 'Family ID is required');
+    const {name, description, familyId, status} = data;
+
+    // Validate input
+    if (!name || !description || !familyId) {
+      functions.logger.error("Invalid arguments",
+        {name, description, familyId});
+      throw new functions.https.HttpsError(
+        "invalid-argument",
+        "Task name,description, and familyId are required");
     }
+
+    // Validate status or set default
+    const validStatuses = ["Pending", "In Progress", "Completed"];
+    let taskStatus: string;
+    if (typeof status === "string" && validStatuses.includes(status)) {
+      taskStatus = status;
+    } else {
+      taskStatus = "Pending";
+    }
+
+    // Generate a custom task ID and get the current timestamp
+    const taskId = `task_${Date.now()}`;
+    const unixTimestamp = Math.floor(Date.now() / 1000);
 
     try {
-        const tasksSnapshot = await admin.firestore().collection('Tasks')
-            .where('family_id', '==', familyId).get();
+      // Add the task to the Firestore "Tasks" collection
+      await admin.firestore().collection("Tasks").doc(taskId).set({
+        name,
+        description,
+        family_id: familyId,
+        status: taskStatus,
+        createdAt: unixTimestamp,
+        createdBy: auth.uid,
+      });
 
-        const tasks = tasksSnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-        }));
-
-        return { tasks };
+      functions.logger.info("Task added successfully with ID:", taskId);
+      return {id: taskId};
     } catch (error) {
-        throw new functions.https.HttpsError('unknown', 'Failed to fetch tasks', error);
+      functions.logger.error("Failed to add task:", error);
+      throw new functions.https.HttpsError("unknown", "Failed to add task");
     }
-});
-
-// Adding a new task
-export const addTask = functions.https.onRequest(async (req, res) => {
-    const { family_id, name, description } = req.body;
-
-    if (!family_id || !name || !description) {
-        res.status(400).send('Missing required fields');
-        return;
-    }
-
-    try {
-        const newTask = await admin.firestore().collection('Tasks').add({
-            family_id,
-            name,
-            description,
-            status: 'pending',
-        });
-        res.status(201).json({ id: newTask.id });
-    } catch (error) {
-        logger.error('Error adding task:', error);
-        res.status(500).send('Error adding task');
-    }
-});
-
-// Updating a task's status
-export const updateTaskStatus = functions.https.onRequest(async (req, res) => {
-    const { taskId, status } = req.body;
-
-    if (!taskId || !status) {
-        res.status(400).send('Missing required fields');
-        return;
-    }
-
-    try {
-        await admin.firestore().collection('Tasks').doc(taskId).update({ status });
-        res.status(200).send('Task updated successfully');
-    } catch (error) {
-        logger.error('Error updating task:', error);
-        res.status(500).send('Error updating task');
-    }
-});
-
-// Fetching suggested tasks
-export const getSuggestedTasks = functions.https.onRequest(async (req, res) => {
-    try {
-        const suggestedTasksSnapshot = await admin.firestore().collection('SuggestedTasks').get();
-        const suggestedTasks = suggestedTasksSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        res.status(200).json(suggestedTasks);
-    } catch (error) {
-        logger.error('Error fetching suggested tasks:', error);
-        res.status(500).send('Error fetching suggested tasks');
-    }
-});
+  }
+);

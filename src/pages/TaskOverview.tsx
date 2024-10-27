@@ -1,13 +1,34 @@
-import { Button, Card, CardContent, CircularProgress, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CircularProgress,
+  Grid,
+  Paper,
+  Typography,
+} from '@mui/material';
+import { Assignment, EventNote } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import { db } from '../firebase'; // Adjust the path as needed
+import { useNavigate } from 'react-router-dom';
+
+interface Task {
+  id: string;
+  name: string;
+  dueDate?: string;
+  fee?: number;
+  description?: string;
+}
 
 const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
-  const [tasks, setTasks] = useState<any[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -16,15 +37,15 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
         const q = query(tasksRef, where('family_id', '==', familyId)); // Fetch tasks for specific family
         const querySnapshot = await getDocs(q);
 
-        const fetchedTasks = querySnapshot.docs.map(doc => ({
+        const fetchedTasks = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-        }));
+        })) as Task[];
 
         setTasks(fetchedTasks);
       } catch (error) {
-        console.error("Error fetching tasks: ", error);
-        setError("Failed to load tasks.");
+        console.error('Error fetching tasks: ', error);
+        setError('Failed to load tasks.');
       } finally {
         setLoading(false);
       }
@@ -33,34 +54,99 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
     fetchTasks();
   }, [familyId]);
 
+  const handleViewDetails = (taskId: string) => {
+    // Navigate to task details page (implement this route as needed)
+    navigate(`/tasks/${taskId}`);
+  };
+
   if (loading) {
-    return <CircularProgress />;
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          height: '80vh',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'background.default',
+          color: 'text.primary',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (error) {
-    return <Typography color="error">{error}</Typography>;
+    return (
+      <Alert severity="error" sx={{ mt: 2 }}>
+        {error}
+      </Alert>
+    );
   }
 
   return (
-    <div style={{ padding: '20px' }}>
-      <Typography variant="h4">Upcoming Tasks</Typography>
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h4" gutterBottom>
+        Upcoming Tasks
+      </Typography>
+
       {tasks.length === 0 ? (
-        <Typography>No upcoming tasks found.</Typography>
+        <Paper
+          sx={{
+            p: 3,
+            backgroundColor: 'background.paper',
+            color: 'text.secondary',
+          }}
+        >
+          <Typography>No upcoming tasks found.</Typography>
+        </Paper>
       ) : (
-        tasks.map((task) => (
-          <Card key={task.id} style={{ margin: '10px 0', padding: '10px', backgroundColor: '#f7f7f7' }}>
-            <CardContent>
-              <Typography variant="h5">{task.name}</Typography>
-              <Typography>Opt in before {task.dueDate || 'N/A'}</Typography>
-              <Typography>Additional fee of ${task.fee || 'N/A'}</Typography>
-              <Button variant="outlined" color="primary" fullWidth style={{ marginTop: '10px' }}>
-                View Details
-              </Button>
-            </CardContent>
-          </Card>
-        ))
+        <Grid container spacing={2}>
+          {tasks.map((task) => (
+            <Grid item xs={12} md={6} key={task.id}>
+              <Card
+                sx={{
+                  backgroundColor: 'background.paper',
+                  color: 'text.primary',
+                  transition: 'transform 0.2s',
+                  '&:hover': {
+                    transform: 'scale(1.02)',
+                  },
+                }}
+              >
+                <CardContent>
+                  <Box display="flex" alignItems="center" mb={1}>
+                    <Assignment sx={{ mr: 1, color: 'primary.main' }} />
+                    <Typography variant="h5">{task.name}</Typography>
+                  </Box>
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    {task.description || 'No description available.'}
+                  </Typography>
+                  <Box display="flex" alignItems="center" mt={2}>
+                    <EventNote sx={{ mr: 1, color: 'secondary.main' }} />
+                    <Typography variant="body2">
+                      Opt in before: {task.dueDate || 'N/A'}
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2" mt={1}>
+                    Additional fee: ${task.fee ? task.fee.toFixed(2) : 'N/A'}
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                    onClick={() => handleViewDetails(task.id)}
+                  >
+                    View Details
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       )}
-    </div>
+    </Box>
   );
 };
 

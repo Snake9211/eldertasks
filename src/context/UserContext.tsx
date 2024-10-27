@@ -1,24 +1,34 @@
-import React, { ReactNode, createContext, useContext, useState } from "react";
+// src/context/UserContext.tsx
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { fetchUserProfile, onAuthStateChangedListener } from "../services/authService";
 
-import { User as FirebaseUser } from "firebase/auth"; // Import Firebase User type
-
-// Define a custom type that extends Firebase's User with familyId
-interface CustomUser extends FirebaseUser {
-  familyId: string;
-}
+import { CustomUser } from "../types";
 
 interface UserContextType {
-  user: CustomUser | null;
-  setUser: (user: CustomUser | null) => void;
+  currentUser: CustomUser | null;
+  setUser: React.Dispatch<React.SetStateAction<CustomUser | null>>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<CustomUser | null>(null);
+export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState<CustomUser | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener(async (user) => {
+      if (user) {
+        const fullProfile = await fetchUserProfile();
+        setCurrentUser(fullProfile);
+      } else {
+        setCurrentUser(null);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ currentUser, setUser: setCurrentUser }}>
       {children}
     </UserContext.Provider>
   );
@@ -26,8 +36,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 export const useUser = () => {
   const context = useContext(UserContext);
-  if (!context) {
-    throw new Error("useUser must be used within a UserProvider");
-  }
+  if (!context) throw new Error("useUser must be used within a UserProvider");
   return context;
 };

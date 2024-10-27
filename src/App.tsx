@@ -1,30 +1,71 @@
-import { BottomNavigation, BottomNavigationAction } from "@mui/material";
+import {
+  AccountCircle as AccountCircleIcon,
+  AddCircleOutline as AddCircleOutlineIcon,
+  Home as HomeIcon,
+  ListAlt as ListAltIcon,
+} from "@mui/icons-material";
+import {
+  AppBar,
+  BottomNavigation,
+  BottomNavigationAction,
+  Box,
+  CircularProgress,
+  CssBaseline,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
+// App.tsx
 import React, { useEffect, useState } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import AddIcon from "@mui/icons-material/Add";
 import AddTask from "./pages/AddTask";
 import Home from "./pages/Home";
-import HomeIcon from "@mui/icons-material/Home";
-import ListAltIcon from "@mui/icons-material/ListAlt";
+import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import SignUp from "./pages/SignUp";
 import TaskOverview from "./pages/TaskOverview";
 import { User } from "firebase/auth";
 import { onAuthStateChangedListener } from "./services/authService";
 import { useFamilyContext } from "./context/FamilyContext";
 
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#90caf9",
+    },
+    secondary: {
+      main: "#f48fb1",
+    },
+    background: {
+      default: "#121212",
+      paper: "#1e1e1e",
+    },
+    text: {
+      primary: "#ffffff",
+      secondary: "#b0b0b0",
+    },
+  },
+  typography: {
+    fontFamily: "Roboto, Arial, sans-serif",
+  },
+  shape: {
+    borderRadius: 16,
+  },
+});
+
 const App: React.FC = () => {
   const { familyId } = useFamilyContext();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // Track loading state for auth
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
       setCurrentUser(user);
-      setIsLoading(false); // Set loading to false after auth state is determined
+      setIsLoading(false);
     });
     return unsubscribe;
   }, []);
@@ -33,35 +74,130 @@ const App: React.FC = () => {
     console.log("Task added:", taskName);
   };
 
-  // Check if the current route is the login page to conditionally hide the navigation
-  const showNavigation = currentUser && location.pathname !== "/login";
+  // Determine if navigation should be shown
+  const showNavigation =
+    currentUser &&
+    location.pathname !== "/login" &&
+    location.pathname !== "/signup";
 
   if (isLoading) {
-    // Optional: Display a loading spinner or splash screen while loading
-    return <div>Loading...</div>;
+    // Display a loading spinner while authentication state is loading
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          height: "100vh",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "background.default",
+          color: "text.primary",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (
-    <div className="App">
-      <Routes>
-        {/* Redirect to login if user is not authenticated */}
-        <Route path="/" element={currentUser ? <Home /> : <Navigate to="/login" replace />} />
-        <Route path="/tasks" element={currentUser ? <TaskOverview familyId={familyId} /> : <Navigate to="/login" replace />} />
-        <Route path="/add-task" element={currentUser ? <AddTask onTaskAdded={handleTaskAdded} /> : <Navigate to="/login" replace />} />
-        <Route path="/profile" element={currentUser ? <Profile /> : <Navigate to="/login" replace />} />
-        <Route path="/login" element={currentUser ? <Navigate to="/" replace /> : <Login />} />
-      </Routes>
-
-      {/* Bottom Navigation Bar, visible only when logged in and not on the login page */}
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {/* Remove the Router wrapping here */}
+      {/* Top App Bar */}
       {showNavigation && (
-        <BottomNavigation showLabels style={{ position: "fixed", bottom: 0, width: "100%" }}>
-          <BottomNavigationAction component={Link} to="/" label="Home" icon={<HomeIcon />} />
-          <BottomNavigationAction component={Link} to="/tasks" label="Tasks" icon={<ListAltIcon />} />
-          <BottomNavigationAction component={Link} to="/add-task" label="Add Task" icon={<AddIcon />} />
-          <BottomNavigationAction component={Link} to="/profile" label="Profile" icon={<AccountCircleIcon />} />
+        <AppBar position="fixed">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Family Assistant
+            </Typography>
+            {/* You can add a user avatar or settings icon here */}
+          </Toolbar>
+        </AppBar>
+      )}
+
+      {/* Main Content */}
+      <Box
+        sx={{
+          paddingTop: showNavigation ? "64px" : 0,
+          paddingBottom: showNavigation ? "56px" : 0,
+          minHeight: "100vh",
+          backgroundColor: "background.default",
+          color: "text.primary",
+        }}
+      >
+        <Routes>
+          {/* Unauthenticated Routes */}
+          {!currentUser && (
+            <>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </>
+          )}
+
+          {/* Authenticated Routes */}
+          {currentUser && (
+            <>
+              <Route path="/" element={<Home />} />
+              <Route
+                path="/tasks"
+                element={<TaskOverview familyId={familyId} />}
+              />
+              <Route
+                path="/add-task"
+                element={<AddTask onTaskAdded={handleTaskAdded} />}
+              />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </>
+          )}
+        </Routes>
+      </Box>
+
+      {/* Bottom Navigation Bar */}
+      {showNavigation && (
+        <BottomNavigation
+          showLabels
+          value={location.pathname}
+          sx={{
+            position: "fixed",
+            bottom: 0,
+            width: "100%",
+            boxShadow: "0 -1px 5px rgba(0,0,0,0.1)",
+            backgroundColor: "background.paper",
+          }}
+        >
+          <BottomNavigationAction
+            component={Link}
+            to="/"
+            label="Home"
+            icon={<HomeIcon />}
+            value="/"
+          />
+          <BottomNavigationAction
+            component={Link}
+            to="/tasks"
+            label="Tasks"
+            icon={<ListAltIcon />}
+            value="/tasks"
+          />
+          <BottomNavigationAction
+            component={Link}
+            to="/add-task"
+            label="Add Task"
+            icon={<AddCircleOutlineIcon />}
+            value="/add-task"
+          />
+          <BottomNavigationAction
+            component={Link}
+            to="/profile"
+            label="Profile"
+            icon={<AccountCircleIcon />}
+            value="/profile"
+          />
         </BottomNavigation>
       )}
-    </div>
+    </ThemeProvider>
   );
 };
 

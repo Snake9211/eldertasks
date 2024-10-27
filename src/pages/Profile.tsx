@@ -1,73 +1,144 @@
-import { Box, Button, Card, CardContent, Divider, TextField, Typography } from '@mui/material';
+import { AccountCircle, Lock, Notifications } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  Typography,
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 
-import React from 'react';
-import { logout } from "../services/authService"; // Import the logout function
-import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
+import { logout } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 const Profile: React.FC = () => {
-  const navigate = useNavigate(); // Initialize navigate for redirection
+  const navigate = useNavigate();
+  const { currentUser } = useUser(); // Use currentUser from context
+  const [familyCode, setFamilyCode] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchFamilyCode = async () => {
+      if (currentUser?.familyId) {
+        try {
+          const firestore = getFirestore();
+          const familyRef = doc(firestore, 'Families', currentUser.familyId);
+          const familyDoc = await getDoc(familyRef);
+          if (familyDoc.exists()) {
+            const familyData = familyDoc.data();
+            setFamilyCode(familyData.familyCode);
+          } else {
+            console.warn("Family document does not exist in Firestore.");
+          }
+        } catch (error) {
+          console.error('Error fetching family code:', error);
+        }
+      }
+    };
+
+    fetchFamilyCode();
+  }, [currentUser?.familyId]);
 
   const handleLogout = async () => {
     try {
-      await logout(); // Call logout to sign the user out
-      navigate("/login"); // Redirect to login page after logging out
+      await logout();
+      navigate('/login');
     } catch (error) {
-      console.error("Error during logout:", error);
+      console.error('Error during logout:', error);
     }
   };
 
   return (
-    <Box style={{ padding: '20px' }}>
-      <Typography variant="h4" gutterBottom>Profile</Typography>
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h4" gutterBottom>
+        Profile
+      </Typography>
 
-      <Card style={{ margin: '20px 0', padding: '10px', backgroundColor: '#f7f7f7' }}>
+      {/* User Information Card */}
+      <Card
+        sx={{
+          my: 2,
+          backgroundColor: 'background.paper',
+          color: 'text.primary',
+        }}
+      >
         <CardContent>
-          <Typography variant="h6">User Information</Typography>
-          <Typography variant="body1" color="textSecondary">Name: Ian Smith</Typography>
-          <Typography variant="body1" color="textSecondary">Membership: Premium</Typography>
-          <Button variant="outlined" color="primary" style={{ marginTop: '10px' }}>
+          <Box display="flex" alignItems="center" mb={2}>
+            <AccountCircle sx={{ mr: 1, color: 'primary.main', fontSize: 30 }} />
+            <Typography variant="h6">User Information</Typography>
+          </Box>
+          <Typography variant="body1" color="text.secondary">
+            Name: {currentUser?.displayName || 'User'}
+          </Typography>
+          {familyCode && (
+            <Typography variant="body1" color="text.secondary">
+              Family Code: {familyCode}
+            </Typography>
+          )}
+          <Button variant="outlined" color="primary" sx={{ mt: 2 }}>
             Edit Profile
           </Button>
         </CardContent>
       </Card>
 
-      <Card style={{ margin: '20px 0', padding: '10px', backgroundColor: '#f7f7f7' }}>
+      {/* Notifications Card */}
+      <Card
+        sx={{
+          my: 2,
+          backgroundColor: 'background.paper',
+          color: 'text.primary',
+        }}
+      >
         <CardContent>
-          <Typography variant="h6">Notifications</Typography>
-          <Typography variant="body2" color="textSecondary">Manage your notification preferences.</Typography>
-          <Button variant="outlined" color="primary" style={{ marginTop: '10px' }}>
+          <Box display="flex" alignItems="center" mb={2}>
+            <Notifications sx={{ mr: 1, color: 'secondary.main', fontSize: 30 }} />
+            <Typography variant="h6">Notifications</Typography>
+          </Box>
+          <Typography variant="body2" color="text.secondary">
+            Manage your notification preferences.
+          </Typography>
+          <Button variant="outlined" color="secondary" sx={{ mt: 2 }}>
             Notification Settings
           </Button>
         </CardContent>
       </Card>
 
-      <Card style={{ margin: '20px 0', padding: '10px', backgroundColor: '#f7f7f7' }}>
+      {/* Update Password Card */}
+      <Card
+        sx={{
+          my: 2,
+          backgroundColor: 'background.paper',
+          color: 'text.primary',
+        }}
+      >
         <CardContent>
-          <Typography variant="h6">Update Password</Typography>
-          <TextField
-            label="Current Password"
-            type="password"
+          <Box display="flex" alignItems="center" mb={2}>
+            <Lock sx={{ mr: 1, color: 'primary.main', fontSize: 30 }} />
+            <Typography variant="h6">Update Password</Typography>
+          </Box>
+          {/* Include password update form or functionality here */}
+          <Button
+            variant="contained"
+            color="primary"
             fullWidth
-            variant="outlined"
-            style={{ marginTop: '10px' }}
-          />
-          <TextField
-            label="New Password"
-            type="password"
-            fullWidth
-            variant="outlined"
-            style={{ marginTop: '10px' }}
-          />
-          <Button variant="contained" color="primary" fullWidth style={{ marginTop: '20px' }}>
+            sx={{ mt: 3 }}
+          >
             Update Password
           </Button>
         </CardContent>
       </Card>
 
-      <Divider style={{ margin: '20px 0' }} />
+      <Divider sx={{ my: 3 }} />
 
       {/* Log Out Button */}
-      <Button variant="contained" color="secondary" fullWidth onClick={handleLogout}>
+      <Button
+        variant="contained"
+        color="secondary"
+        fullWidth
+        onClick={handleLogout}
+      >
         Log Out
       </Button>
     </Box>
