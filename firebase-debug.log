@@ -1,0 +1,418 @@
+[debug] [2024-10-28T05:19:27.191Z] ----------------------------------------------------------------------
+[debug] [2024-10-28T05:19:27.192Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2024-10-28T05:19:27.193Z] CLI Version:   13.23.0
+[debug] [2024-10-28T05:19:27.193Z] Platform:      darwin
+[debug] [2024-10-28T05:19:27.193Z] Node Version:  v20.16.0
+[debug] [2024-10-28T05:19:27.193Z] Time:          Mon Oct 28 2024 00:19:27 GMT-0500 (Central Daylight Time)
+[debug] [2024-10-28T05:19:27.193Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-10-28T05:19:27.226Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-10-28T05:19:27.227Z] > authorizing via signed-in user (tiwarin9211@gmail.com)
+[debug] [2024-10-28T05:19:27.227Z] [iam] checking project eldertasks-9b0da for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2024-10-28T05:19:27.227Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:27.227Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:27.228Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/eldertasks-9b0da:testIamPermissions [none]
+[debug] [2024-10-28T05:19:27.228Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/eldertasks-9b0da:testIamPermissions x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:27.228Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/eldertasks-9b0da:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-10-28T05:19:27.391Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/eldertasks-9b0da:testIamPermissions 200
+[debug] [2024-10-28T05:19:27.391Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/eldertasks-9b0da:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-10-28T05:19:27.392Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:27.392Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:27.392Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/eldertasks-9b0da/serviceAccounts/eldertasks-9b0da@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2024-10-28T05:19:27.392Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/eldertasks-9b0da/serviceAccounts/eldertasks-9b0da@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2024-10-28T05:19:27.489Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/eldertasks-9b0da/serviceAccounts/eldertasks-9b0da@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2024-10-28T05:19:27.489Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/eldertasks-9b0da/serviceAccounts/eldertasks-9b0da@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'eldertasks-9b0da'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
+[info] ✔  functions: Finished running predeploy script. 
+[debug] [2024-10-28T05:19:31.056Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:31.057Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:31.057Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/eldertasks-9b0da [none]
+[debug] [2024-10-28T05:19:31.167Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/eldertasks-9b0da 200
+[debug] [2024-10-28T05:19:31.167Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/eldertasks-9b0da {"projectId":"eldertasks-9b0da","projectNumber":"900453051325","displayName":"eldertasks","name":"projects/eldertasks-9b0da","resources":{"hostingSite":"eldertasks-9b0da"},"state":"ACTIVE","etag":"1_6d28b55b-e051-4650-8cc9-70fa52ca9053"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[debug] [2024-10-28T05:19:31.168Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:31.168Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:31.168Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:31.168Z] Checked if tokens are valid: true, expires at: 1730096144080
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[debug] [2024-10-28T05:19:31.168Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:31.169Z] Checked if tokens are valid: true, expires at: 1730096144080
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2024-10-28T05:19:31.169Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:31.169Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:31.169Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudfunctions.googleapis.com [none]
+[debug] [2024-10-28T05:19:31.171Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:31.173Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/runtimeconfig.googleapis.com [none]
+[debug] [2024-10-28T05:19:31.173Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:31.174Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudbuild.googleapis.com [none]
+[debug] [2024-10-28T05:19:31.174Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudbuild.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:31.175Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/artifactregistry.googleapis.com [none]
+[debug] [2024-10-28T05:19:31.175Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/artifactregistry.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:31.379Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudbuild.googleapis.com 200
+[debug] [2024-10-28T05:19:31.380Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudbuild.googleapis.com [omitted]
+[warn] ⚠  functions: missing required API cloudbuild.googleapis.com. Enabling now... 
+[debug] [2024-10-28T05:19:31.381Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:31.382Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:31.383Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudbuild.googleapis.com:enable [none]
+[debug] [2024-10-28T05:19:31.383Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudbuild.googleapis.com:enable x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:31.387Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/runtimeconfig.googleapis.com 200
+[debug] [2024-10-28T05:19:31.387Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2024-10-28T05:19:31.389Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudfunctions.googleapis.com 200
+[debug] [2024-10-28T05:19:31.390Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudfunctions.googleapis.com [omitted]
+[info] ✔  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2024-10-28T05:19:31.391Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/artifactregistry.googleapis.com 200
+[debug] [2024-10-28T05:19:31.391Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/artifactregistry.googleapis.com [omitted]
+[warn] ⚠  artifactregistry: missing required API artifactregistry.googleapis.com. Enabling now... 
+[debug] [2024-10-28T05:19:31.392Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:31.392Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:31.392Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/artifactregistry.googleapis.com:enable [none]
+[debug] [2024-10-28T05:19:31.392Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/artifactregistry.googleapis.com:enable x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:31.675Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/artifactregistry.googleapis.com:enable 200
+[debug] [2024-10-28T05:19:31.675Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/artifactregistry.googleapis.com:enable [omitted]
+[debug] [2024-10-28T05:19:31.681Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudbuild.googleapis.com:enable 200
+[debug] [2024-10-28T05:19:31.681Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudbuild.googleapis.com:enable [omitted]
+[debug] [2024-10-28T05:19:41.678Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:41.678Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:41.679Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/artifactregistry.googleapis.com [none]
+[debug] [2024-10-28T05:19:41.679Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/artifactregistry.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:41.683Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:41.683Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:41.684Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudbuild.googleapis.com [none]
+[debug] [2024-10-28T05:19:41.684Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudbuild.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:41.896Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudbuild.googleapis.com 200
+[debug] [2024-10-28T05:19:41.897Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/cloudbuild.googleapis.com [omitted]
+[info] ✔  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2024-10-28T05:19:41.901Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/artifactregistry.googleapis.com 200
+[debug] [2024-10-28T05:19:41.901Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/artifactregistry.googleapis.com [omitted]
+[info] ✔  artifactregistry: required API artifactregistry.googleapis.com is enabled 
+[debug] [2024-10-28T05:19:41.902Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:41.902Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:41.903Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/eldertasks-9b0da/adminSdkConfig [none]
+[debug] [2024-10-28T05:19:42.032Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/eldertasks-9b0da/adminSdkConfig 200
+[debug] [2024-10-28T05:19:42.033Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/eldertasks-9b0da/adminSdkConfig {"projectId":"eldertasks-9b0da","storageBucket":"eldertasks-9b0da.appspot.com"}
+[debug] [2024-10-28T05:19:42.033Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:42.033Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:42.033Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/eldertasks-9b0da/configs [none]
+[debug] [2024-10-28T05:19:42.412Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/eldertasks-9b0da/configs 200
+[debug] [2024-10-28T05:19:42.412Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/eldertasks-9b0da/configs {}
+[debug] [2024-10-28T05:19:42.415Z] Validating nodejs source
+[debug] [2024-10-28T05:19:42.790Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "firebase": "^11.0.1",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2024-10-28T05:19:42.790Z] Building nodejs source
+[info] i  functions: Loading and analyzing source code for codebase default to determine what to deploy 
+[debug] [2024-10-28T05:19:42.791Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-10-28T05:19:42.794Z] Found firebase-functions binary at '/Users/nikhiltiwari/Documents/coding projects/eldertasks/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8076
+
+[debug] [2024-10-28T05:19:43.216Z] Got response from /__/functions.yaml {"endpoints":{"addTask":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"callableTrigger":{},"entryPoint":"addTask"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] i  extensions: ensuring required API firebaseextensions.googleapis.com is enabled... 
+[debug] [2024-10-28T05:19:48.233Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:48.233Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:48.234Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/firebaseextensions.googleapis.com [none]
+[debug] [2024-10-28T05:19:48.234Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/firebaseextensions.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:48.414Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/firebaseextensions.googleapis.com 200
+[debug] [2024-10-28T05:19:48.415Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/firebaseextensions.googleapis.com [omitted]
+[warn] ⚠  extensions: missing required API firebaseextensions.googleapis.com. Enabling now... 
+[debug] [2024-10-28T05:19:48.415Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:48.415Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:48.416Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/firebaseextensions.googleapis.com:enable [none]
+[debug] [2024-10-28T05:19:48.416Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/firebaseextensions.googleapis.com:enable x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:48.728Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/firebaseextensions.googleapis.com:enable 200
+[debug] [2024-10-28T05:19:48.728Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/firebaseextensions.googleapis.com:enable [omitted]
+[debug] [2024-10-28T05:19:58.729Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:58.729Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:58.730Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/firebaseextensions.googleapis.com [none]
+[debug] [2024-10-28T05:19:58.730Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/firebaseextensions.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:58.915Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/firebaseextensions.googleapis.com 200
+[debug] [2024-10-28T05:19:58.916Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/firebaseextensions.googleapis.com [omitted]
+[info] ✔  extensions: required API firebaseextensions.googleapis.com is enabled 
+[debug] [2024-10-28T05:19:58.920Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-10-28T05:19:58.920Z] > authorizing via signed-in user (tiwarin9211@gmail.com)
+[debug] [2024-10-28T05:19:58.920Z] [iam] checking project eldertasks-9b0da for permissions ["firebase.projects.get","firebaseextensions.instances.list"]
+[debug] [2024-10-28T05:19:58.921Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:58.921Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:58.921Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/eldertasks-9b0da:testIamPermissions [none]
+[debug] [2024-10-28T05:19:58.921Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/eldertasks-9b0da:testIamPermissions x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:19:58.921Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/eldertasks-9b0da:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
+[debug] [2024-10-28T05:19:59.058Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/eldertasks-9b0da:testIamPermissions 200
+[debug] [2024-10-28T05:19:59.058Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/eldertasks-9b0da:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
+[debug] [2024-10-28T05:19:59.059Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:59.059Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:19:59.059Z] >>> [apiv2][query] GET https://firebaseextensions.googleapis.com/v1beta/projects/eldertasks-9b0da/instances pageSize=100&pageToken=
+[debug] [2024-10-28T05:20:00.511Z] <<< [apiv2][status] GET https://firebaseextensions.googleapis.com/v1beta/projects/eldertasks-9b0da/instances 200
+[debug] [2024-10-28T05:20:00.512Z] <<< [apiv2][body] GET https://firebaseextensions.googleapis.com/v1beta/projects/eldertasks-9b0da/instances {}
+[info] i  functions: preparing functions directory for uploading... 
+[info] i  functions: packaged /Users/nikhiltiwari/Documents/coding projects/eldertasks/functions (93.35 KB) for uploading 
+[debug] [2024-10-28T05:20:00.554Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:00.554Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:00.554Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/eldertasks-9b0da/locations/-/functions [none]
+[debug] [2024-10-28T05:20:01.257Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/eldertasks-9b0da/locations/-/functions 200
+[debug] [2024-10-28T05:20:01.257Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/eldertasks-9b0da/locations/-/functions {}
+[debug] [2024-10-28T05:20:01.257Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:01.258Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:01.258Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2024-10-28T05:20:01.615Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/-/functions 200
+[debug] [2024-10-28T05:20:01.615Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/-/functions {}
+[info] i  functions: ensuring required API run.googleapis.com is enabled... 
+[debug] [2024-10-28T05:20:01.617Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:01.618Z] Checked if tokens are valid: true, expires at: 1730096144080
+[info] i  functions: ensuring required API eventarc.googleapis.com is enabled... 
+[debug] [2024-10-28T05:20:01.618Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:01.618Z] Checked if tokens are valid: true, expires at: 1730096144080
+[info] i  functions: ensuring required API pubsub.googleapis.com is enabled... 
+[debug] [2024-10-28T05:20:01.618Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:01.618Z] Checked if tokens are valid: true, expires at: 1730096144080
+[info] i  functions: ensuring required API storage.googleapis.com is enabled... 
+[debug] [2024-10-28T05:20:01.618Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:01.618Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:01.618Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/run.googleapis.com [none]
+[debug] [2024-10-28T05:20:01.618Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/run.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:20:01.619Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/eventarc.googleapis.com [none]
+[debug] [2024-10-28T05:20:01.619Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/eventarc.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:20:01.622Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/pubsub.googleapis.com [none]
+[debug] [2024-10-28T05:20:01.623Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/pubsub.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:20:01.625Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/storage.googleapis.com [none]
+[debug] [2024-10-28T05:20:01.625Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/storage.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:20:01.784Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/run.googleapis.com 200
+[debug] [2024-10-28T05:20:01.784Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/run.googleapis.com [omitted]
+[warn] ⚠  functions: missing required API run.googleapis.com. Enabling now... 
+[debug] [2024-10-28T05:20:01.785Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:01.785Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:01.785Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/run.googleapis.com:enable [none]
+[debug] [2024-10-28T05:20:01.785Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/run.googleapis.com:enable x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:20:01.836Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/eventarc.googleapis.com 200
+[debug] [2024-10-28T05:20:01.836Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/eventarc.googleapis.com [omitted]
+[warn] ⚠  functions: missing required API eventarc.googleapis.com. Enabling now... 
+[debug] [2024-10-28T05:20:01.836Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:01.837Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:01.837Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/eventarc.googleapis.com:enable [none]
+[debug] [2024-10-28T05:20:01.837Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/eventarc.googleapis.com:enable x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:20:01.861Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/storage.googleapis.com 200
+[debug] [2024-10-28T05:20:01.862Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/storage.googleapis.com [omitted]
+[info] ✔  functions: required API storage.googleapis.com is enabled 
+[debug] [2024-10-28T05:20:01.879Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/pubsub.googleapis.com 200
+[debug] [2024-10-28T05:20:01.879Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/pubsub.googleapis.com [omitted]
+[info] ✔  functions: required API pubsub.googleapis.com is enabled 
+[debug] [2024-10-28T05:20:02.059Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/run.googleapis.com:enable 200
+[debug] [2024-10-28T05:20:02.059Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/run.googleapis.com:enable [omitted]
+[debug] [2024-10-28T05:20:02.128Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/eventarc.googleapis.com:enable 200
+[debug] [2024-10-28T05:20:02.128Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/eventarc.googleapis.com:enable [omitted]
+[debug] [2024-10-28T05:20:12.060Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:12.060Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:12.060Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/run.googleapis.com [none]
+[debug] [2024-10-28T05:20:12.060Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/run.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:20:12.130Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:12.130Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:12.130Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/eventarc.googleapis.com [none]
+[debug] [2024-10-28T05:20:12.131Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/eventarc.googleapis.com x-goog-quota-user=projects/eldertasks-9b0da
+[debug] [2024-10-28T05:20:12.285Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/eventarc.googleapis.com 200
+[debug] [2024-10-28T05:20:12.285Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/eventarc.googleapis.com [omitted]
+[info] ✔  functions: required API eventarc.googleapis.com is enabled 
+[debug] [2024-10-28T05:20:12.291Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/run.googleapis.com 200
+[debug] [2024-10-28T05:20:12.291Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/eldertasks-9b0da/services/run.googleapis.com [omitted]
+[info] ✔  functions: required API run.googleapis.com is enabled 
+[info] i  functions: generating the service identity for pubsub.googleapis.com... 
+[debug] [2024-10-28T05:20:12.294Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:12.294Z] Checked if tokens are valid: true, expires at: 1730096144080
+[info] i  functions: generating the service identity for eventarc.googleapis.com... 
+[debug] [2024-10-28T05:20:12.294Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:12.294Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:12.295Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/900453051325/services/pubsub.googleapis.com:generateServiceIdentity [none]
+[debug] [2024-10-28T05:20:12.296Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/900453051325/services/eventarc.googleapis.com:generateServiceIdentity [none]
+[debug] [2024-10-28T05:20:13.170Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/900453051325/services/pubsub.googleapis.com:generateServiceIdentity 200
+[debug] [2024-10-28T05:20:13.171Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/900453051325/services/pubsub.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-900453051325@gcp-sa-pubsub.iam.gserviceaccount.com","uniqueId":"112342754514334679496"}}
+[debug] [2024-10-28T05:20:13.242Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/900453051325/services/eventarc.googleapis.com:generateServiceIdentity 200
+[debug] [2024-10-28T05:20:13.242Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/900453051325/services/eventarc.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-900453051325@gcp-sa-eventarc.iam.gserviceaccount.com","uniqueId":"106910804073774964477"}}
+[debug] [2024-10-28T05:20:13.245Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:13.245Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:13.246Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/eldertasks-9b0da [none]
+[debug] [2024-10-28T05:20:13.349Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/eldertasks-9b0da 200
+[debug] [2024-10-28T05:20:13.349Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/eldertasks-9b0da {"projectId":"eldertasks-9b0da","projectNumber":"900453051325","displayName":"eldertasks","name":"projects/eldertasks-9b0da","resources":{"hostingSite":"eldertasks-9b0da"},"state":"ACTIVE","etag":"1_6d28b55b-e051-4650-8cc9-70fa52ca9053"}
+[debug] [2024-10-28T05:20:13.350Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:13.351Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:13.351Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/eldertasks-9b0da/billingInfo [none]
+[debug] [2024-10-28T05:20:13.731Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/eldertasks-9b0da/billingInfo 200
+[debug] [2024-10-28T05:20:13.732Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/eldertasks-9b0da/billingInfo {"name":"projects/eldertasks-9b0da/billingInfo","projectId":"eldertasks-9b0da","billingAccountName":"billingAccounts/0146E5-CA520C-62702D","billingEnabled":true}
+[debug] [2024-10-28T05:20:13.734Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:13.734Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:13.734Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/functions:generateUploadUrl [none]
+[debug] [2024-10-28T05:20:15.152Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/functions:generateUploadUrl 200
+[debug] [2024-10-28T05:20:15.152Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/functions:generateUploadUrl {"uploadUrl":"https://storage.googleapis.com/gcf-v2-uploads-900453051325-us-central1/01ae1e3c-cf9f-49b5-b00d-93c30b3de52d.zip?GoogleAccessId=service-900453051325@gcf-admin-robot.iam.gserviceaccount.com&Expires=1730094615&Signature=k9DzGbWmcnOaurQcDRHfIdWDXLeqsFxRfU2hC1k79K5aCM6xIfeiaswPafhz11sp7nU0B9TQR0eXOaYm2uAdQTZ%2B3izcxZ2hiILXLxnYHGvbOtHc%2BtGjAHPWorxAi58eaGGKScJabdTFsJdEjMFPsuscaNwZznKyIdB2%2BfSajenUWn0AQeqqlhBY%2B4Ju8yxzQCEldmVyV7YcN64mahvANIgPSORQcAcetw2Ql%2FZdSgykBjItUNX0O4mSH%2BQEgfwYWP2%2FzQkJNNYpTChrkhTS%2FtN9TeaGa6xVcd8Ad9nLk48LaXBT2ZNrxzTMAfvxQ3K5JdbHLWH6TbJ6M0oBxpg4iQ%3D%3D","storageSource":{"bucket":"gcf-v2-uploads-900453051325-us-central1","object":"01ae1e3c-cf9f-49b5-b00d-93c30b3de52d.zip"}}
+[debug] [2024-10-28T05:20:15.155Z] >>> [apiv2][query] PUT https://storage.googleapis.com/gcf-v2-uploads-900453051325-us-central1/01ae1e3c-cf9f-49b5-b00d-93c30b3de52d.zip GoogleAccessId=service-900453051325%40gcf-admin-robot.iam.gserviceaccount.com&Expires=1730094615&Signature=k9DzGbWmcnOaurQcDRHfIdWDXLeqsFxRfU2hC1k79K5aCM6xIfeiaswPafhz11sp7nU0B9TQR0eXOaYm2uAdQTZ%2B3izcxZ2hiILXLxnYHGvbOtHc%2BtGjAHPWorxAi58eaGGKScJabdTFsJdEjMFPsuscaNwZznKyIdB2%2BfSajenUWn0AQeqqlhBY%2B4Ju8yxzQCEldmVyV7YcN64mahvANIgPSORQcAcetw2Ql%2FZdSgykBjItUNX0O4mSH%2BQEgfwYWP2%2FzQkJNNYpTChrkhTS%2FtN9TeaGa6xVcd8Ad9nLk48LaXBT2ZNrxzTMAfvxQ3K5JdbHLWH6TbJ6M0oBxpg4iQ%3D%3D
+[debug] [2024-10-28T05:20:15.155Z] >>> [apiv2][body] PUT https://storage.googleapis.com/gcf-v2-uploads-900453051325-us-central1/01ae1e3c-cf9f-49b5-b00d-93c30b3de52d.zip [stream]
+[debug] [2024-10-28T05:20:15.344Z] <<< [apiv2][status] PUT https://storage.googleapis.com/gcf-v2-uploads-900453051325-us-central1/01ae1e3c-cf9f-49b5-b00d-93c30b3de52d.zip 200
+[debug] [2024-10-28T05:20:15.344Z] <<< [apiv2][body] PUT https://storage.googleapis.com/gcf-v2-uploads-900453051325-us-central1/01ae1e3c-cf9f-49b5-b00d-93c30b3de52d.zip [omitted]
+[info] ✔  functions: functions folder uploaded successfully 
+[info] i  functions: creating Node.js 18 (2nd Gen) function addTask(us-central1)... 
+[debug] [2024-10-28T05:20:15.351Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:15.351Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:15.351Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/functions functionId=addTask
+[debug] [2024-10-28T05:20:15.351Z] >>> [apiv2][body] POST https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/functions {"name":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","buildConfig":{"runtime":"nodejs18","entryPoint":"addTask","source":{"storageSource":{"bucket":"gcf-v2-uploads-900453051325-us-central1","object":"01ae1e3c-cf9f-49b5-b00d-93c30b3de52d.zip"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""}},"serviceConfig":{"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"eldertasks-9b0da\",\"storageBucket\":\"eldertasks-9b0da.appspot.com\"}","GCLOUD_PROJECT":"eldertasks-9b0da","EVENTARC_CLOUD_EVENT_SOURCE":"projects/eldertasks-9b0da/locations/us-central1/services/addTask","FUNCTION_TARGET":"addTask"},"ingressSettings":null,"timeoutSeconds":null,"serviceAccountEmail":null,"availableMemory":"256Mi","minInstanceCount":null,"maxInstanceCount":null,"maxInstanceRequestConcurrency":80,"availableCpu":"1","vpcConnector":null,"vpcConnectorEgressSettings":null},"labels":{"deployment-tool":"cli-firebase","deployment-callable":"true","firebase-functions-hash":"cadbbf344973067e71da7106e7cf225c9f03c410"}}
+[debug] [2024-10-28T05:20:16.650Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/functions 200
+[debug] [2024-10-28T05:20:16.650Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/functions {"name":"projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2024-10-28T05:20:16.643023755Z","target":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","verb":"create","cancelRequested":false,"apiVersion":"v2"},"done":false}
+[debug] [2024-10-28T05:20:16.651Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:16.651Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:16.651Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d [none]
+[debug] [2024-10-28T05:20:16.733Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d 200
+[debug] [2024-10-28T05:20:16.733Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d {"name":"projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2024-10-28T05:20:16.643023755Z","target":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","verb":"create","cancelRequested":false,"apiVersion":"v2"},"done":false}
+[debug] [2024-10-28T05:20:17.235Z] [create-default-us-central1-addTask] Retrying task index 0
+[debug] [2024-10-28T05:20:17.236Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:17.236Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:17.236Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d [none]
+[debug] [2024-10-28T05:20:17.311Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d 200
+[debug] [2024-10-28T05:20:17.311Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d {"name":"projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2024-10-28T05:20:16.643023755Z","target":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","buildConfig":{"runtime":"nodejs18","entryPoint":"addTask","source":{"storageSource":{"bucket":"gcf-v2-sources-900453051325-us-central1","object":"addTask/function-source.zip","generation":"1730092816362957"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/eldertasks-9b0da/serviceAccounts/900453051325-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/eldertasks-9b0da/locations/us-central1/services/addtask","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"eldertasks-9b0da\",\"storageBucket\":\"eldertasks-9b0da.appspot.com\"}","GCLOUD_PROJECT":"eldertasks-9b0da","EVENTARC_CLOUD_EVENT_SOURCE":"projects/eldertasks-9b0da/locations/us-central1/services/addTask","FUNCTION_TARGET":"addTask","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"900453051325-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","deployment-callable":"true","firebase-functions-hash":"cadbbf344973067e71da7106e7cf225c9f03c410"},"environment":"GEN_2"},"stages":[{"name":"BUILD","state":"NOT_STARTED"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION"},"done":false}
+[debug] [2024-10-28T05:20:18.313Z] [create-default-us-central1-addTask] Retrying task index 0
+[debug] [2024-10-28T05:20:18.313Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:18.314Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:18.314Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d [none]
+[debug] [2024-10-28T05:20:18.377Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d 200
+[debug] [2024-10-28T05:20:18.377Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d {"name":"projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2024-10-28T05:20:16.643023755Z","target":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","buildConfig":{"runtime":"nodejs18","entryPoint":"addTask","source":{"storageSource":{"bucket":"gcf-v2-sources-900453051325-us-central1","object":"addTask/function-source.zip","generation":"1730092816362957"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/eldertasks-9b0da/serviceAccounts/900453051325-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/eldertasks-9b0da/locations/us-central1/services/addtask","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"eldertasks-9b0da\",\"storageBucket\":\"eldertasks-9b0da.appspot.com\"}","GCLOUD_PROJECT":"eldertasks-9b0da","EVENTARC_CLOUD_EVENT_SOURCE":"projects/eldertasks-9b0da/locations/us-central1/services/addTask","FUNCTION_TARGET":"addTask","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"900453051325-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","deployment-callable":"true","firebase-functions-hash":"cadbbf344973067e71da7106e7cf225c9f03c410"},"environment":"GEN_2"},"stages":[{"name":"BUILD","state":"NOT_STARTED"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION"},"done":false}
+[debug] [2024-10-28T05:20:20.378Z] [create-default-us-central1-addTask] Retrying task index 0
+[debug] [2024-10-28T05:20:20.379Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:20.379Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:20.379Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d [none]
+[debug] [2024-10-28T05:20:20.458Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d 200
+[debug] [2024-10-28T05:20:20.458Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d {"name":"projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2024-10-28T05:20:16.643023755Z","target":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","buildConfig":{"runtime":"nodejs18","entryPoint":"addTask","source":{"storageSource":{"bucket":"gcf-v2-sources-900453051325-us-central1","object":"addTask/function-source.zip","generation":"1730092816362957"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/eldertasks-9b0da/serviceAccounts/900453051325-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/eldertasks-9b0da/locations/us-central1/services/addtask","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"eldertasks-9b0da\",\"storageBucket\":\"eldertasks-9b0da.appspot.com\"}","GCLOUD_PROJECT":"eldertasks-9b0da","EVENTARC_CLOUD_EVENT_SOURCE":"projects/eldertasks-9b0da/locations/us-central1/services/addTask","FUNCTION_TARGET":"addTask","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"900453051325-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","deployment-callable":"true","firebase-functions-hash":"cadbbf344973067e71da7106e7cf225c9f03c410"},"environment":"GEN_2"},"stages":[{"name":"BUILD","state":"NOT_STARTED"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION"},"done":false}
+[debug] [2024-10-28T05:20:24.459Z] [create-default-us-central1-addTask] Retrying task index 0
+[debug] [2024-10-28T05:20:24.459Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:24.460Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:24.460Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d [none]
+[debug] [2024-10-28T05:20:24.531Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d 200
+[debug] [2024-10-28T05:20:24.532Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d {"name":"projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2024-10-28T05:20:16.643023755Z","target":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","buildConfig":{"runtime":"nodejs18","entryPoint":"addTask","source":{"storageSource":{"bucket":"gcf-v2-sources-900453051325-us-central1","object":"addTask/function-source.zip","generation":"1730092816362957"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/eldertasks-9b0da/serviceAccounts/900453051325-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/eldertasks-9b0da/locations/us-central1/services/addtask","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"eldertasks-9b0da\",\"storageBucket\":\"eldertasks-9b0da.appspot.com\"}","GCLOUD_PROJECT":"eldertasks-9b0da","EVENTARC_CLOUD_EVENT_SOURCE":"projects/eldertasks-9b0da/locations/us-central1/services/addTask","FUNCTION_TARGET":"addTask","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"900453051325-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","deployment-callable":"true","firebase-functions-hash":"cadbbf344973067e71da7106e7cf225c9f03c410"},"environment":"GEN_2"},"stages":[{"name":"BUILD","state":"NOT_STARTED"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION"},"done":false}
+[debug] [2024-10-28T05:20:32.533Z] [create-default-us-central1-addTask] Retrying task index 0
+[debug] [2024-10-28T05:20:32.536Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:32.536Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:32.537Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d [none]
+[debug] [2024-10-28T05:20:32.644Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d 200
+[debug] [2024-10-28T05:20:32.645Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d {"name":"projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2024-10-28T05:20:16.643023755Z","target":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","buildConfig":{"runtime":"nodejs18","entryPoint":"addTask","source":{"storageSource":{"bucket":"gcf-v2-sources-900453051325-us-central1","object":"addTask/function-source.zip","generation":"1730092816362957"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/eldertasks-9b0da/serviceAccounts/900453051325-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/eldertasks-9b0da/locations/us-central1/services/addtask","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"eldertasks-9b0da\",\"storageBucket\":\"eldertasks-9b0da.appspot.com\"}","GCLOUD_PROJECT":"eldertasks-9b0da","EVENTARC_CLOUD_EVENT_SOURCE":"projects/eldertasks-9b0da/locations/us-central1/services/addTask","FUNCTION_TARGET":"addTask","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"900453051325-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","deployment-callable":"true","firebase-functions-hash":"cadbbf344973067e71da7106e7cf225c9f03c410"},"environment":"GEN_2"},"stages":[{"name":"BUILD","message":"Build in progress","state":"IN_PROGRESS","resource":"projects/900453051325/locations/us-central1/builds/0036c2dd-47f6-49eb-a551-192b1328b085","resourceUri":"https://console.cloud.google.com/cloud-build/builds;region=us-central1/0036c2dd-47f6-49eb-a551-192b1328b085?project=900453051325"},{"name":"SERVICE","state":"NOT_STARTED"}],"operationType":"CREATE_FUNCTION","buildName":"projects/900453051325/locations/us-central1/builds/0036c2dd-47f6-49eb-a551-192b1328b085"},"done":false}
+[debug] [2024-10-28T05:20:42.647Z] [create-default-us-central1-addTask] Retrying task index 0
+[debug] [2024-10-28T05:20:42.647Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:42.647Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:42.647Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d [none]
+[debug] [2024-10-28T05:20:42.751Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d 200
+[debug] [2024-10-28T05:20:42.751Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d {"name":"projects/eldertasks-9b0da/locations/us-central1/operations/operation-1730092815444-625829fb16b33-0587731a-c5223a7d","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v2.OperationMetadata","createTime":"2024-10-28T05:20:16.643023755Z","endTime":"2024-10-28T05:20:37.093987587Z","target":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","verb":"create","cancelRequested":false,"apiVersion":"v2","requestResource":{"@type":"type.googleapis.com/google.cloud.functions.v2.Function","name":"projects/eldertasks-9b0da/locations/us-central1/functions/addTask","buildConfig":{"runtime":"nodejs18","entryPoint":"addTask","source":{"storageSource":{"bucket":"gcf-v2-sources-900453051325-us-central1","object":"addTask/function-source.zip","generation":"1730092816362957"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"serviceAccount":"projects/eldertasks-9b0da/serviceAccounts/900453051325-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/eldertasks-9b0da/locations/us-central1/services/addtask","timeoutSeconds":60,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"eldertasks-9b0da\",\"storageBucket\":\"eldertasks-9b0da.appspot.com\"}","GCLOUD_PROJECT":"eldertasks-9b0da","EVENTARC_CLOUD_EVENT_SOURCE":"projects/eldertasks-9b0da/locations/us-central1/services/addTask","FUNCTION_TARGET":"addTask","LOG_EXECUTION_ID":"true"},"ingressSettings":"ALLOW_ALL","serviceAccountEmail":"900453051325-compute@developer.gserviceaccount.com","availableMemory":"256Mi","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","deployment-callable":"true","firebase-functions-hash":"cadbbf344973067e71da7106e7cf225c9f03c410"},"environment":"GEN_2"},"stages":[{"name":"ARTIFACT_REGISTRY","message":"Deleting function artifacts in Artifact Registry","state":"COMPLETE"},{"name":"SERVICE","message":"Deleting Cloud Run service","state":"COMPLETE","resource":"projects/eldertasks-9b0da/locations/us-central1/services/addtask"}],"operationType":"CREATE_FUNCTION"},"done":true,"error":{"code":13,"message":"Build failed with status: INTERNAL_ERROR and message: An unexpected error occurred. Refer to build logs: https://console.cloud.google.com/cloud-build/builds;region=us-central1/0036c2dd-47f6-49eb-a551-192b1328b085?project=900453051325. For more details see the logs at https://console.cloud.google.com/cloud-build/builds;region=us-central1/0036c2dd-47f6-49eb-a551-192b1328b085?project=900453051325."}}
+[debug] [2024-10-28T05:20:42.751Z] Got source token undefined for region us-central1
+[error] Build failed with status: INTERNAL_ERROR and message: An unexpected error occurred. Refer to build logs: https://console.cloud.google.com/cloud-build/builds;region=us-central1/0036c2dd-47f6-49eb-a551-192b1328b085?project=900453051325. For more details see the logs at https://console.cloud.google.com/cloud-build/builds;region=us-central1/0036c2dd-47f6-49eb-a551-192b1328b085?project=900453051325.
+[debug] [2024-10-28T05:20:42.756Z] Total Function Deployment time: 27405
+[debug] [2024-10-28T05:20:42.756Z] 1 Functions Deployed
+[debug] [2024-10-28T05:20:42.756Z] 1 Functions Errored
+[debug] [2024-10-28T05:20:42.756Z] 0 Function Deployments Aborted
+[debug] [2024-10-28T05:20:42.756Z] Average Function Deployment time: 27403
+[info] 
+[info] Functions deploy had errors with the following functions:
+	addTask(us-central1)
+[info] i  functions: cleaning up build files... 
+[debug] [2024-10-28T05:20:42.811Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:42.811Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:42.812Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:42.812Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:42.812Z] >>> [apiv2][query] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/eldertasks-9b0da/locations/us-central1/repositories/gcf-artifacts/packages/add_task [none]
+[debug] [2024-10-28T05:20:42.812Z] >>> [apiv2][query] GET https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list [none]
+[debug] [2024-10-28T05:20:42.931Z] <<< [apiv2][status] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/eldertasks-9b0da/locations/us-central1/repositories/gcf-artifacts/packages/add_task 404
+[debug] [2024-10-28T05:20:42.931Z] <<< [apiv2][body] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/eldertasks-9b0da/locations/us-central1/repositories/gcf-artifacts/packages/add_task {"error":{"code":404,"message":"Package \"projects/eldertasks-9b0da/locations/us-central1/repositories/gcf-artifacts/packages/add_task\" was not found.","status":"NOT_FOUND"}}
+[debug] [2024-10-28T05:20:43.403Z] <<< [apiv2][status] GET https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list 404
+[debug] [2024-10-28T05:20:43.403Z] <<< [apiv2][body] GET https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list {"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}]}
+[debug] [2024-10-28T05:20:43.404Z] Failed docker command with error  Request to https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list had HTTP Error: 404, Not Found {"name":"FirebaseError","children":[],"context":{"body":{"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}],"error":{"message":"Not Found"}},"response":{"statusCode":404}},"exit":1,"message":"Request to https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list had HTTP Error: 404, Not Found","status":404}
+[debug] [2024-10-28T05:20:43.406Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:43.406Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:43.406Z] >>> [apiv2][query] GET https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list [none]
+[debug] [2024-10-28T05:20:43.472Z] <<< [apiv2][status] GET https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list 404
+[debug] [2024-10-28T05:20:43.472Z] <<< [apiv2][body] GET https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list {"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}]}
+[debug] [2024-10-28T05:20:43.472Z] Failed docker command with error  Request to https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list had HTTP Error: 404, Not Found {"name":"FirebaseError","children":[],"context":{"body":{"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}],"error":{"message":"Not Found"}},"response":{"statusCode":404}},"exit":1,"message":"Request to https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list had HTTP Error: 404, Not Found","status":404}
+[debug] [2024-10-28T05:20:43.574Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:43.575Z] Checked if tokens are valid: true, expires at: 1730096144080
+[debug] [2024-10-28T05:20:43.575Z] >>> [apiv2][query] GET https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list [none]
+[debug] [2024-10-28T05:20:43.640Z] <<< [apiv2][status] GET https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list 404
+[debug] [2024-10-28T05:20:43.640Z] <<< [apiv2][body] GET https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list {"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}]}
+[debug] [2024-10-28T05:20:43.640Z] Failed docker command with error  Request to https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list had HTTP Error: 404, Not Found {"name":"FirebaseError","children":[],"context":{"body":{"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}],"error":{"message":"Not Found"}},"response":{"statusCode":404}},"exit":1,"message":"Request to https://us.gcr.io/v2/eldertasks-9b0da/gcf/us-central1/tags/list had HTTP Error: 404, Not Found","status":404}
+[warn] ⚠  functions: Unhandled error cleaning up build images. This could result in a small monthly bill if not corrected. You can attempt to delete these images by redeploying or you can delete them manually at https://console.cloud.google.com/gcr/images/eldertasks-9b0da/us/gcf 
+[debug] [2024-10-28T05:20:43.641Z] Functions deploy failed.
+[debug] [2024-10-28T05:20:43.641Z] {
+  "endpoint": {
+    "id": "addTask",
+    "project": "eldertasks-9b0da",
+    "region": "us-central1",
+    "entryPoint": "addTask",
+    "platform": "gcfv2",
+    "runtime": "nodejs18",
+    "callableTrigger": {},
+    "labels": {
+      "deployment-tool": "cli-firebase"
+    },
+    "ingressSettings": null,
+    "availableMemoryMb": null,
+    "serviceAccount": null,
+    "timeoutSeconds": null,
+    "maxInstances": null,
+    "minInstances": null,
+    "concurrency": 80,
+    "vpc": null,
+    "environmentVariables": {
+      "FIREBASE_CONFIG": "{\"projectId\":\"eldertasks-9b0da\",\"storageBucket\":\"eldertasks-9b0da.appspot.com\"}",
+      "GCLOUD_PROJECT": "eldertasks-9b0da",
+      "EVENTARC_CLOUD_EVENT_SOURCE": "projects/eldertasks-9b0da/locations/us-central1/services/addTask"
+    },
+    "codebase": "default",
+    "cpu": 1,
+    "targetedByOnly": false,
+    "hash": "cadbbf344973067e71da7106e7cf225c9f03c410"
+  },
+  "op": "create",
+  "original": {
+    "name": "FirebaseError",
+    "children": [],
+    "exit": 1,
+    "message": "Build failed with status: INTERNAL_ERROR and message: An unexpected error occurred. Refer to build logs: https://console.cloud.google.com/cloud-build/builds;region=us-central1/0036c2dd-47f6-49eb-a551-192b1328b085?project=900453051325. For more details see the logs at https://console.cloud.google.com/cloud-build/builds;region=us-central1/0036c2dd-47f6-49eb-a551-192b1328b085?project=900453051325.",
+    "original": {
+      "code": 13,
+      "message": "Build failed with status: INTERNAL_ERROR and message: An unexpected error occurred. Refer to build logs: https://console.cloud.google.com/cloud-build/builds;region=us-central1/0036c2dd-47f6-49eb-a551-192b1328b085?project=900453051325. For more details see the logs at https://console.cloud.google.com/cloud-build/builds;region=us-central1/0036c2dd-47f6-49eb-a551-192b1328b085?project=900453051325."
+    },
+    "status": 13,
+    "code": 13
+  }
+}
+[debug] [2024-10-28T05:20:43.664Z] Error: Failed to create function addTask in region us-central1
+    at /usr/local/lib/node_modules/firebase-tools/lib/deploy/functions/release/fabricator.js:294:27
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Fabricator.createV2Function (/usr/local/lib/node_modules/firebase-tools/lib/deploy/functions/release/fabricator.js:278:30)
+    at async Fabricator.createEndpoint (/usr/local/lib/node_modules/firebase-tools/lib/deploy/functions/release/fabricator.js:137:13)
+    at async handle (/usr/local/lib/node_modules/firebase-tools/lib/deploy/functions/release/fabricator.js:89:17)
+[error] 
+[error] Error: There was an error deploying functions

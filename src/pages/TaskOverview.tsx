@@ -15,6 +15,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import { db } from '../firebase'; // Adjust the path as needed
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 interface Task {
   id: string;
@@ -29,12 +30,17 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { currentUser } = useUser();
+
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
+        if (!currentUser) {
+          return;
+        }
         const tasksRef = collection(db, 'Tasks');
-        const q = query(tasksRef, where('familyId', '==', "fX253u970Koiwzgx6zf5")); // Fetch tasks for specific family
+        const q = query(tasksRef, where('familyId', '==', currentUser.familyId)); // Fetch tasks for specific family
         // const q = query(tasksRef); // Fetch tasks for specific family
         const querySnapshot = await getDocs(q);
 
@@ -131,7 +137,7 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
                     </Typography>
                   </Box>
                   <Typography variant="body2" mt={1}>
-                    Additional fee: ${task.fee ? task.fee.toFixed(2) : 'N/A'}
+                    Additional fee: Our team will get back to you.
                   </Typography>
                   <Button
                     variant="outlined"
