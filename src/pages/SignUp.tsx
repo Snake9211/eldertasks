@@ -1,5 +1,3 @@
-// SignUp.tsx
-
 import {
   Alert,
   Box,
@@ -120,7 +118,7 @@ const SignUp: React.FC = () => {
       }
 
       // Create user profile in Firestore with additional info
-      await createUserProfile(user, { displayName, surname, familyId });
+      await createUserProfile( user.email as string, user.displayName as string, user.uid, { familyId: familyId, displayName: displayName });      
       console.log("User profile created:", user.uid);
 
       navigate("/"); // Redirect to the home page after successful sign-up

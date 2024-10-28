@@ -32,7 +32,7 @@ const Login: React.FC = () => {
       const firebaseUser = await login(email, password);
 
       // Fetch the familyId from Firestore based on the user's UID
-      const userDoc = await getDoc(doc(firestore, "Users", firebaseUser.uid));
+      const userDoc = await getDoc(doc(firestore, "Users", firebaseUser.id));
       if (userDoc.exists()) {
         const { familyId } = userDoc.data();
         const userWithFamilyId = { ...firebaseUser, familyId };

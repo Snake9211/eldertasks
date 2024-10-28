@@ -29,14 +29,14 @@ const AddTaskForm: React.FC = () => {
       const functions = getFunctions();
       const addTask = httpsCallable(functions, 'addTask');
 
-      const result = await addTask({
-        name: taskName,
-        description: taskDescription,
-        familyId: familyId,
-        status: taskStatus,
-      });
+      addTask({
+        name: "Task Name",
+        description: "Task Description",
+        familyId: "family_id",
+        status: "incomplete"
+      })
 
-      console.log('Task added successfully:', result);
+      console.log('Task added successfully:');
 
       // Reset the form
       setTaskName('');

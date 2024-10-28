@@ -8,9 +8,12 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { addDoc, collection } from "firebase/firestore";
 import { getFunctions, httpsCallable } from "firebase/functions";
 
 import { AssignmentTurnedIn } from "@mui/icons-material";
+import { Task } from "../types";
+import { db } from "../firebase";
 import { useUser } from "../context/UserContext";
 
 type AddTaskProps = {
@@ -27,40 +30,43 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded }) => {
   const handleAddTask = async () => {
     setError(null);
     setSuccess(false);
-
-    if (!name || !description) {
-      setError("Task name and description are required.");
+  
+    if (!name || !description || !currentUser?.familyId) {
+      setError("Task name, description, and family ID are required.");
       return;
     }
-
+  
     console.log("Attempting to add task:", {
       name,
       description,
-      familyId: currentUser?.familyId,
+      familyId: currentUser.familyId,
     });
-
+  
     try {
-      const functions = getFunctions();
-      const addTask = httpsCallable(functions, "addTask");
+      const tasksCollection = collection(db, 'Tasks');
+      
+      const newTask = {
+        name: name,
+        description: description,
+        familyId: currentUser.familyId,
+        status: "incomplete", // Define status as specific strings
+        createdAt: Date.now() // Unix time in seconds
+      }
+  
+      const taskRef = await addDoc(tasksCollection, newTask);
 
-      const result = await addTask({
-        name,
-        description,
-        familyId: currentUser?.familyId,
-      });
-
-      console.log("Task added successfully:", result);
-
+      console.log("Task added successfully:", taskRef.id);
+  
       setSuccess(true);
       setName("");
       setDescription("");
-
+  
       if (onTaskAdded) {
         onTaskAdded(name);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error adding task:", error);
-      setError("Failed to add task. Please try again.");
+      setError(`Failed to add task: ${error.message}`);
     }
   };
 

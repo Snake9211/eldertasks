@@ -9,6 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "types": ["firebase"],
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,

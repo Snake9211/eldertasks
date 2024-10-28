@@ -1,7 +1,6 @@
 import { User, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
-// Example in authService.tsx
 import { CustomUser } from "../types";
 import { auth } from "../firebase";
 
@@ -38,28 +37,39 @@ export const login = async (email: string, password: string): Promise<CustomUser
 };
 
 // Create user profile function
-export const createUserProfile = async (user: CustomUser, additionalData: any = {}) => {
-  if (!user) return;
+// createUserProfile function to store Firestore-specific fields
+export const createUserProfile = async (
+  email: string,
+  displayName: string, 
+  id: string,
+  additionalData: Partial<CustomUser>
+): Promise<void> => {
 
-  const userRef = doc(firestore, "Users", user.uid); // Use UID as document ID
-  const { familyId } = additionalData; 
+  const userRef = doc(firestore, "Users", id); // Use Firebase UID as the Firestore document ID
+  const userSnapshot = await getDoc(userRef);
 
-  try {
-    await setDoc(userRef, {
-      id: user.uid,              // Store the UID as the 'id' field
-      displayName: user.displayName,
-      email: user.email,
-      familyId: familyId || null, // Include familyId if provided
-      createdAt: new Date(),
-      ...additionalData,          // Additional data like membership, etc.
-    });
-    console.log("User profile created successfully with id and familyId.");
-  } catch (error) {
-    console.error("Error creating user profile:", error);
+  if (!userSnapshot.exists()) {
+    const createdAt = Math.floor(Date.now() / 1000);
+
+    const firestoreData: CustomUser = {
+      id: id,
+      familyId: additionalData.familyId || "", // Optional family ID or an empty string
+      createdAt,
+      displayName: displayName || additionalData.displayName || "Guest",
+      email: email || "",
+      // Include any other additional fields as needed
+      ...additionalData,
+    };
+
+    try {
+      await setDoc(userRef, firestoreData);
+      console.log("User profile created successfully in Firestore");
+    } catch (error) {
+      console.error("Error creating user profile:", error);
+    }
   }
 };
 
-// Fetch user profile function
 export const fetchUserProfile = async (): Promise<CustomUser | null> => {
   const user = auth.currentUser;
   if (user) {
@@ -67,9 +77,10 @@ export const fetchUserProfile = async (): Promise<CustomUser | null> => {
     const userSnapshot = await getDoc(userRef);
 
     if (userSnapshot.exists()) {
-      console.log("Fetched user data:", userSnapshot.data());
-      // Use 'as unknown as CustomUser' to force the type
-      return { ...user, ...userSnapshot.data() } as unknown as CustomUser;
+      const firestoreData = userSnapshot.data() as CustomUser;
+      console.log("Fetched user data:", firestoreData);
+      
+      return firestoreData;
     } else {
       console.log("No such user document!");
       return null;

@@ -5,20 +5,14 @@ declare module "*.svg" {
     export default content;
 }
 
-// Type for the "Users" collection in Firestore
-export interface FirestoreUser {
-    id: string; // Firestore document ID, usually the same as Firebase Auth UID
-    displayName: string;
-    email: string;
-    familyId: string;
-    createdAt: number; // Unix time in seconds
-}
-
 // Extend Firebase's User type to include Firestore fields
-export interface CustomUser extends FirebaseUser {
-    familyId?: string;
+export interface CustomUser {
+    familyId: string;
     displayName: string | null; 
+    email: string;
+    id: string;
     membership?: string;
+    createdAt: number;
 }
 
 // Type for the "Tasks" collection

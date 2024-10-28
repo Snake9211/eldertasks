@@ -34,7 +34,8 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
     const fetchTasks = async () => {
       try {
         const tasksRef = collection(db, 'Tasks');
-        const q = query(tasksRef, where('family_id', '==', familyId)); // Fetch tasks for specific family
+        const q = query(tasksRef, where('familyId', '==', "fX253u970Koiwzgx6zf5")); // Fetch tasks for specific family
+        // const q = query(tasksRef); // Fetch tasks for specific family
         const querySnapshot = await getDocs(q);
 
         const fetchedTasks = querySnapshot.docs.map((doc) => ({
@@ -43,6 +44,7 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
         })) as Task[];
 
         setTasks(fetchedTasks);
+        console.log("got task, ", fetchedTasks)
       } catch (error) {
         console.error('Error fetching tasks: ', error);
         setError('Failed to load tasks.');

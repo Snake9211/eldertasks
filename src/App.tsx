@@ -20,6 +20,7 @@ import React, { useEffect, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import AddTask from "./pages/AddTask";
+import { CustomUser } from "./types";
 import Home from "./pages/Home";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
@@ -29,6 +30,7 @@ import TaskOverview from "./pages/TaskOverview";
 import { User } from "firebase/auth";
 import { onAuthStateChangedListener } from "./services/authService";
 import { useFamilyContext } from "./context/FamilyContext";
+import { useUser } from "./context/UserContext";
 
 const theme = createTheme({
   palette: {
@@ -57,8 +59,9 @@ const theme = createTheme({
 });
 
 const App: React.FC = () => {
-  const { familyId } = useFamilyContext();
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  // const { familyId } = useFamilyContext();
+  // const { currentUser } = useUser(); // Access currentUser from context
+  const [currentUser, setCurrentUser] = useState<CustomUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
@@ -141,7 +144,7 @@ const App: React.FC = () => {
               <Route path="/" element={<Home />} />
               <Route
                 path="/tasks"
-                element={<TaskOverview familyId={familyId} />}
+                element={<TaskOverview familyId={currentUser.familyId} />}
               />
               <Route
                 path="/add-task"
