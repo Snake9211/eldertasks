@@ -33,7 +33,7 @@ A web application to help families organize and manage their tasks efficiently. 
 
 ## Live Demo
 
-You can access the live version of the app [here]({https://eldertasks.vercel.app/}).
+You can access the live version of the app [here](https://eldertasks.vercel.app/).
 
 ## Demo Videos
 
