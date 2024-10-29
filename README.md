@@ -33,22 +33,21 @@ A web application to help families organize and manage their tasks efficiently. 
 
 ## Live Demo
 
-You can access the live version of the app [here]({link}).
+You can access the live version of the app [here]({https://eldertasks.vercel.app/}).
 
 ## Demo Videos
 
 Below are links to demo videos showcasing different features of the app:
 
 1. **Adding and Managing Tasks**  
-   [Video Link](https://www.youtube.com/watch?v=VIDEO_ID_1)
+   [Video Link](https://www.loom.com/share/6f7b4ffdc79f41779eca6b9386db412f?sid=acc8a46b-12a8-4565-b96a-a7e084c713ac)
 
 2. **Marking Tasks as Completed and Sorting**  
-   [Video Link](https://www.youtube.com/watch?v=VIDEO_ID_2)
+   [Video Link](https://www.loom.com/share/52a55c638af747f49b14e0e6d8675aaf?sid=38bdfaad-90a9-4970-b146-1ba049822019)
 
 3. **Suggested Tasks and Family Management**  
-   [Video Link](https://www.youtube.com/watch?v=VIDEO_ID_3)
+   [Video Link](https://www.loom.com/share/a844ecfd29fc4a76be418f469ae6e664?sid=3bd6f76a-d10c-4619-85fa-3ee0625c6807)
 
-> **Note**: Replace VIDEO_ID_X with the actual video IDs from your hosting platform.
 
 ## Setup Instructions
 
@@ -64,8 +63,8 @@ Ensure you have the following installed:
 
 1. Clone this repository:
    ```bash
-   git clone <Snake9211/eldertasks>
-   cd <../eldertasks>
+   git clone https://github.com/Snake9211/eldertasks.git
+   cd eldertasks
    ```
 
 2. Install dependencies:
@@ -90,7 +89,6 @@ After setting up the frontend, you can begin testing and using the application l
 .
 ├── public              # Public assets and files
 ├── src
-│   ├── components      # React components
 │   ├── context         # Context API for managing global state
 │   ├── pages           # Page components for different routes
 │   ├── services        # Firebase and other service integrations

@@ -108,11 +108,6 @@ const LandingPage: React.FC = () => {
               {/* Feature 1 */}
               <Grid item xs={12} md={4}>
                 <Box sx={{ textAlign: 'center', px: 2 }}>
-                  <img
-                    src="/path/to/icon1.svg"
-                    alt="Feature 1"
-                    style={{ width: 80, marginBottom: 16 }}
-                  />
                   <Typography variant="h6" sx={{ mb: 2 }}>
                     Task Management
                   </Typography>
@@ -124,11 +119,6 @@ const LandingPage: React.FC = () => {
               {/* Feature 2 */}
               <Grid item xs={12} md={4}>
                 <Box sx={{ textAlign: 'center', px: 2 }}>
-                  <img
-                    src="/path/to/icon2.svg"
-                    alt="Feature 2"
-                    style={{ width: 80, marginBottom: 16 }}
-                  />
                   <Typography variant="h6" sx={{ mb: 2 }}>
                     Shared Calendar
                   </Typography>
@@ -140,11 +130,6 @@ const LandingPage: React.FC = () => {
               {/* Feature 3 */}
               <Grid item xs={12} md={4}>
                 <Box sx={{ textAlign: 'center', px: 2 }}>
-                  <img
-                    src="/path/to/icon3.svg"
-                    alt="Feature 3"
-                    style={{ width: 80, marginBottom: 16 }}
-                  />
                   <Typography variant="h6" sx={{ mb: 2 }}>
                     Communication
                   </Typography>

@@ -38,7 +38,7 @@ const theme = createTheme({
       main: "#f48fb1",
     },
     background: {
-      default: "#121212",
+      default: "#191919",
       paper: "#1e1e1e",
     },
     text: {
@@ -62,7 +62,6 @@ const App: React.FC = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
       setCurrentUser(user);
-      console.log('setting current user', user);
       setIsLoading(false);
     });
     return unsubscribe;

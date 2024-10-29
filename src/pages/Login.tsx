@@ -1,5 +1,3 @@
-// src/pages/Login.tsx
-
 import {
   Alert,
   Box,
@@ -48,7 +46,6 @@ const Login: React.FC = () => {
         const { familyId } = userDoc.data();
         const userWithFamilyId = { ...firebaseUser, familyId };
         setUser(userWithFamilyId);
-        console.log("Logged in as:", userWithFamilyId);
         setSnackbar({
           open: true,
           message: "Logged in successfully!",

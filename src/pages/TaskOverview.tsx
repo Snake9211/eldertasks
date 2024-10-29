@@ -1,5 +1,3 @@
-// src/pages/TaskOverview.tsx
-
 import {
   Alert,
   Box,
@@ -39,12 +37,10 @@ import {
 
 import { SelectChangeEvent } from '@mui/material';
 import { db } from '../firebase'; // Adjust the path as needed
-import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 
 const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
   const { currentUser } = useUser();
-  const navigate = useNavigate();
 
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -125,7 +121,6 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
         }));
 
         setSuggestedTasks(fetchedSuggestedTasks);
-        console.log('Fetched suggested tasks:', fetchedSuggestedTasks);
       } catch (error) {
         console.error('Error fetching suggested tasks:', error);
         setError('Failed to load suggested tasks.');
@@ -186,7 +181,6 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
       // Remove the task from suggestedTasks state
       setSuggestedTasks((prev) => prev.filter((t) => t.id !== task.id));
 
-      console.log(`Task "${task.name}" has been added to your current tasks.`);
       setSnackbar({
         open: true,
         message: `Task "${task.name}" added successfully!`,
@@ -235,7 +229,6 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
       // Update local state
       setTasks((prev) => prev.filter((t) => t.id !== taskToDelete.id));
 
-      console.log(`Task "${taskToDelete.name}" has been deleted.`);
       setSnackbar({
         open: true,
         message: `Task "${taskToDelete.name}" deleted successfully!`,
@@ -282,7 +275,6 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
         )
       );
 
-      console.log(`Task "${taskToComplete.name}" has been marked as completed.`);
       setSnackbar({
         open: true,
         message: `Task "${taskToComplete.name}" marked as completed!`,
@@ -397,7 +389,6 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
                       left: 0,
                       width: '100%',
                       height: '100%',
-                      bgcolor: 'rgba(76, 175, 80, 0.05)', // Even lighter green overlay
                       pointerEvents: 'none',
                     }}
                   />
@@ -407,7 +398,7 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
                     <Assignment sx={{ mr: 1, color: 'primary.main' }} />
                     <Typography variant="h5">{task.name}</Typography>
                   </Box>
-                  <Box display="flex" alignItems="center" mt={2}>
+                  <Box display="flex" alignItems="center"  mt={2}>
                     <EventNote sx={{ mr: 1, color: 'secondary.main' }} />
                     <Typography variant="body2">
                       Status: {task.status || 'Incomplete'}

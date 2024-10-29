@@ -34,12 +34,6 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded }) => {
       return;
     }
   
-    console.log("Attempting to add task:", {
-      name,
-      description,
-      familyId: currentUser.familyId,
-    });
-  
     try {
       const tasksCollection = collection(db, 'Tasks');
       

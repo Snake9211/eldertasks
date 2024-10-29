@@ -38,7 +38,6 @@ const Home: React.FC = () => {
         const q = query(
           tasksRef,
           where('familyId', '==', currentUser.familyId),
-          where('isSuggested', '==', false)
         );
         const querySnapshot = await getDocs(q);
 
@@ -58,7 +57,6 @@ const Home: React.FC = () => {
         });
 
         setTasks(sortedTasks.slice(0, 5)); // Get the 5 most recent tasks
-        console.log('Fetched tasks:', sortedTasks.slice(0, 5));
       } catch (err) {
         console.error('Error fetching tasks:', err);
         setError('Failed to load recent tasks.');
@@ -81,12 +79,6 @@ const Home: React.FC = () => {
   // Calculate Task Statistics
   const completedTasks = tasks.filter((task) => task.status === 'Completed').length;
   const pendingTasks = tasks.filter((task) => task.status === 'Pending').length;
-
-  // Debugging Logs
-  useEffect(() => {
-    console.log('Completed Tasks:', completedTasks);
-    console.log('Pending Tasks:', pendingTasks);
-  }, [completedTasks, pendingTasks]);
 
   if (loading) {
     return (

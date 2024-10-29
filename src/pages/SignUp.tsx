@@ -1,5 +1,3 @@
-// src/pages/SignUp.tsx
-
 import {
   Alert,
   Box,
@@ -106,7 +104,6 @@ const SignUp: React.FC = () => {
           const familyDoc = codeSnapshot.docs[0];
           familyId = familyDoc.id;
           familyCode = familyDoc.data().familyCode;
-          console.log("Joined family with ID:", familyId);
         } else {
           setErrorMessage("Invalid family code.");
           return;
@@ -124,13 +121,11 @@ const SignUp: React.FC = () => {
             familyCode,
           });
           familyId = newFamilyRef.id;
-          console.log("Created new family with ID:", familyId);
         } else {
           // Family exists, get the familyId
           const familyDoc = querySnapshot.docs[0];
           familyId = familyDoc.id;
           familyCode = familyDoc.data().familyCode;
-          console.log("Found existing family with ID:", familyId);
         }
       }
 
@@ -141,7 +136,6 @@ const SignUp: React.FC = () => {
         user.uid,
         { familyId: familyId, displayName: displayName }
       );
-      console.log("User profile created:", user.uid);
 
       // Automatically log in the user by updating UserContext
       // This should be handled by your UserContext's onAuthStateChangedListener

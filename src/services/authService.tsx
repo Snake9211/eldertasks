@@ -9,10 +9,8 @@ const firestore = getFirestore();
 // Login function with Firestore user data fetch
 export const login = async (email: string, password: string): Promise<CustomUser> => {
   try {
-    console.log("Attempting to log in with email:", email);
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-    console.log("User authenticated with UID:", user.uid);
 
     // Attempt to fetch additional user data from Firestore
     const userRef = doc(firestore, "Users", user.uid);
@@ -20,7 +18,6 @@ export const login = async (email: string, password: string): Promise<CustomUser
 
     if (userSnapshot.exists()) {
       const userData = userSnapshot.data();
-      console.log("User data from Firestore:", userData);
 
       // Merge Firebase Auth and Firestore data with double assertion
       return { ...user, ...userData } as unknown as CustomUser;
@@ -61,7 +58,6 @@ export const createUserProfile = async (
 
     try {
       await setDoc(userRef, firestoreData);
-      console.log("User profile created successfully in Firestore");
     } catch (error) {
       console.error("Error creating user profile:", error);
     }
@@ -76,7 +72,6 @@ export const fetchUserProfile = async (): Promise<CustomUser | null> => {
 
     if (userSnapshot.exists()) {
       const firestoreData = userSnapshot.data() as CustomUser;
-      console.log("Fetched user data:", firestoreData);
       
       return firestoreData;
     } else {
@@ -105,7 +100,6 @@ export const onAuthStateChangedListener = (callback: (user: CustomUser | null) =
       if (user) {
         // Fetch full user data, including Firestore fields, if available
         const userWithProfile = await fetchUserProfile();
-        console.log('on authstatechange', user);
         callback(userWithProfile as CustomUser); // Provide user data with Firestore fields to the callback
       } else {
         callback(null);
