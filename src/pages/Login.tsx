@@ -1,5 +1,3 @@
-// Login.tsx
-
 import {
   Alert,
   Box,
@@ -31,7 +29,6 @@ const Login: React.FC = () => {
     try {
       const firebaseUser = await login(email, password);
 
-      // Fetch the familyId from Firestore based on the user's UID
       const userDoc = await getDoc(doc(firestore, "Users", firebaseUser.id));
       if (userDoc.exists()) {
         const { familyId } = userDoc.data();

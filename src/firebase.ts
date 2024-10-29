@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth"; // Import getAuth for authentication
 import { getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 
-// Your web app's Firebase configuration
+// Web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDsnT-teePsL608OSVROzLLtISzcGCnGDA",
   authDomain: "eldertasks-9b0da.firebaseapp.com",
@@ -14,11 +14,10 @@ const firebaseConfig = {
   measurementId: "G-LPPB485ENS"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
-const auth = getAuth(app); // Initialize Authentication
+const auth = getAuth(app);
 
 // Export the initialized app, db, analytics, and auth
 export { app, db, analytics, auth };

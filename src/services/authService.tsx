@@ -1,5 +1,5 @@
-import { User, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 import { CustomUser } from "../types";
 import { auth } from "../firebase";
@@ -32,11 +32,10 @@ export const login = async (email: string, password: string): Promise<CustomUser
     }
   } catch (error) {
     console.error("Login error:", error);
-    throw new Error("Invalid email or password"); // Custom error message for invalid login
+    throw new Error("Invalid email or password");
   }
 };
 
-// Create user profile function
 // createUserProfile function to store Firestore-specific fields
 export const createUserProfile = async (
   email: string,
@@ -45,7 +44,7 @@ export const createUserProfile = async (
   additionalData: Partial<CustomUser>
 ): Promise<void> => {
 
-  const userRef = doc(firestore, "Users", id); // Use Firebase UID as the Firestore document ID
+  const userRef = doc(firestore, "Users", id);
   const userSnapshot = await getDoc(userRef);
 
   if (!userSnapshot.exists()) {
@@ -53,11 +52,10 @@ export const createUserProfile = async (
 
     const firestoreData: CustomUser = {
       id: id,
-      familyId: additionalData.familyId || "", // Optional family ID or an empty string
+      familyId: additionalData.familyId || "",
       createdAt,
       displayName: displayName || additionalData.displayName || "Guest",
       email: email || "",
-      // Include any other additional fields as needed
       ...additionalData,
     };
 

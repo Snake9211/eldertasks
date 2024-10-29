@@ -1,7 +1,6 @@
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import { Parallax, ParallaxProvider } from 'react-scroll-parallax';
 
-// LandingPage.tsx
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';

@@ -1,5 +1,3 @@
-import { User as FirebaseUser } from "firebase/auth"; // Use Firebase's User type for authentication
-
 declare module "*.svg" {
     const content: any;
     export default content;
@@ -15,24 +13,27 @@ export interface CustomUser {
     createdAt: number;
 }
 
-// Type for the "Tasks" collection
-export interface Task {
-    id: string; // Custom ID or Firestore generated ID
-    name: string;
-    description: string;
-    familyId: string;
-    status: "incomplete" | "completed"; // Define status as specific strings
-    createdAt: number; // Unix time in seconds
-}
 
-// Type for the "SuggestedTasks" collection
-export interface SuggestedTask {
-    id: string; // Custom or Firestore-generated ID
+export interface Task {
+    createdAt: any;
+    id: string;
     name: string;
-    description: string;
-    estimated_cost: number;
-    status: "pending" | "completed"; // Define status as specific strings
-}
+    dueDate?: string;
+    status: string;
+    fee?: number;
+    description?: string;
+    familyId?: string;       // Added to associate the task with a family
+    isSuggested?: boolean;   // Added to differentiate suggested tasks
+  }
+  
+  export interface SuggestedTask {
+    id: string;
+    name: string;
+    dueDate?: string;
+    fee?: number;
+    description?: string;
+    isSuggested: boolean;    // Typically always true for suggested tasks
+  }
 
 // Type for the "Families" collection
 export interface Family {

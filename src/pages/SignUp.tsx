@@ -30,8 +30,8 @@ const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [surname, setSurname] = useState(""); // New state for surname
-  const [familyCodeInput, setFamilyCodeInput] = useState(""); // For optional family code
+  const [surname, setSurname] = useState("");
+  const [familyCodeInput, setFamilyCodeInput] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -101,7 +101,7 @@ const SignUp: React.FC = () => {
 
         if (querySnapshot.empty) {
           // No family exists with this surname, create a new family
-          familyCode = await getUniqueFamilyCode(familiesRef, 6); // Pass familiesRef here
+          familyCode = await getUniqueFamilyCode(familiesRef, 6);
           const newFamilyRef = await addDoc(familiesRef, {
             surname,
             familyCode,
@@ -130,7 +130,7 @@ const SignUp: React.FC = () => {
     }
   };
 
-  // Optional: Function to redirect to login page
+  // Function to redirect to login page
   const handleLoginRedirect = () => {
     navigate("/login");
   };
@@ -170,7 +170,7 @@ const SignUp: React.FC = () => {
           />
           <TextField
             margin="normal"
-            required={!familyCodeInput} // Required if no family code
+            required={!familyCodeInput}
             fullWidth
             label="Surname"
             variant="outlined"
@@ -179,7 +179,7 @@ const SignUp: React.FC = () => {
             InputLabelProps={{
               sx: { color: "text.secondary" },
             }}
-            disabled={!!familyCodeInput} // Disable if family code is provided
+            disabled={!!familyCodeInput}
           />
           <TextField
             margin="normal"

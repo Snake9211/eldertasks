@@ -16,7 +16,7 @@ import { useUser } from '../context/UserContext';
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
-  const { currentUser } = useUser(); // Use currentUser from context
+  const { currentUser } = useUser();
   const [familyCode, setFamilyCode] = useState<string | null>(null);
 
   useEffect(() => {

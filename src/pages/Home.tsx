@@ -1,100 +1,256 @@
+// src/pages/Home.tsx
+
+import { Add, Assignment, AssignmentTurnedIn, List } from '@mui/icons-material';
 import {
+  Alert,
   Box,
   Button,
   Card,
   CardContent,
+  CircularProgress,
   Grid,
   Paper,
   Typography,
 } from '@mui/material';
-import { CalendarToday, Settings } from '@mui/icons-material';
+import React, { useEffect, useState } from 'react';
+import { collection, getDocs, query, serverTimestamp, where } from 'firebase/firestore';
 
-import React from 'react';
+import { Task } from '../types';
+import { db } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 
 const Home: React.FC = () => {
-  const { currentUser } = useUser(); // Access currentUser from context
+  const { currentUser } = useUser();
+  const navigate = useNavigate();
+
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRecentTasks = async () => {
+      try {
+        if (!currentUser) {
+          setLoading(false);
+          return;
+        }
+
+        const tasksRef = collection(db, 'Tasks');
+        const q = query(
+          tasksRef,
+          where('familyId', '==', currentUser.familyId),
+          where('isSuggested', '==', false)
+        );
+        const querySnapshot = await getDocs(q);
+
+        const fetchedTasks = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          .filter((task) => true) as Task[];
+
+        // Sort tasks by creation time
+        const sortedTasks = fetchedTasks.sort((a, b) => {
+          if (a.createdAt && b.createdAt) {
+            return b.createdAt.seconds - a.createdAt.seconds;
+          }
+          return 0;
+        });
+
+        setTasks(sortedTasks.slice(0, 5)); // Get the 5 most recent tasks
+        console.log('Fetched tasks:', sortedTasks.slice(0, 5));
+      } catch (err) {
+        console.error('Error fetching tasks:', err);
+        setError('Failed to load recent tasks.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecentTasks();
+  }, [currentUser]);
+
+  const handleAddTask = () => {
+    navigate('/tasks/create'); // Navigate to the task creation page
+  };
+
+  const handleViewAllTasks = () => {
+    navigate('/tasks'); // Navigate to the tasks overview page
+  };
+
+  // Calculate Task Statistics
+  const completedTasks = tasks.filter((task) => task.status === 'Completed').length;
+  const pendingTasks = tasks.filter((task) => task.status === 'Pending').length;
+
+  // Debugging Logs
+  useEffect(() => {
+    console.log('Completed Tasks:', completedTasks);
+    console.log('Pending Tasks:', pendingTasks);
+  }, [completedTasks, pendingTasks]);
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          height: '80vh',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'background.default',
+          color: 'text.primary',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ p: 2 }}>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+
       <Typography variant="h4" gutterBottom>
         Welcome, {currentUser?.displayName || 'User'}!
       </Typography>
 
-      <Grid container spacing={2}>
-        {/* Schedule Walk-thru Card */}
-        <Grid item xs={12} sm={6}>
-          <Card
-            sx={{
-              backgroundColor: 'background.paper',
-              color: 'text.primary',
-            }}
-          >
-            <CardContent>
-              <Box display="flex" alignItems="center" mb={2}>
-                <CalendarToday sx={{ mr: 1, color: 'primary.main' }} />
-                <Typography variant="h5">Schedule your walk-thru</Typography>
-              </Box>
-              <Typography variant="body1" gutterBottom>
-                Book a free walk-through to get started.
-              </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                sx={{ mt: 2 }}
-              >
-                Book Now
-              </Button>
-            </CardContent>
-          </Card>
+      {/* Quick Actions */}
+      <Box sx={{ mb: 4 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} md={3}>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<Add />}
+              fullWidth
+              onClick={handleAddTask}
+            >
+              Add New Task
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              startIcon={<List />}
+              fullWidth
+              onClick={handleViewAllTasks}
+            >
+              View All Tasks
+            </Button>
+          </Grid>
+          {/* You can add more quick action buttons here */}
         </Grid>
+      </Box>
 
-        {/* Setup Wizard Card */}
-        <Grid item xs={12} sm={6}>
-          <Card
-            sx={{
-              backgroundColor: 'background.paper',
-              color: 'text.primary',
-            }}
-          >
-            <CardContent>
-              <Box display="flex" alignItems="center" mb={2}>
-                <Settings sx={{ mr: 1, color: 'secondary.main' }} />
-                <Typography variant="h5">Let’s get set up!</Typography>
-              </Box>
-              <Typography variant="body1" gutterBottom>
-                Use our setup wizard to make your app work hard for you.
-              </Typography>
-              <Button
-                variant="outlined"
-                color="secondary"
-                fullWidth
-                sx={{ mt: 2 }}
-              >
-                Continue
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-
-      {/* Additional Sections */}
-      <Box mt={4}>
+      {/* Task Statistics */}
+      <Box sx={{ mb: 4 }}>
         <Typography variant="h5" gutterBottom>
-          Your Tasks
+          Task Statistics
         </Typography>
-        <Paper
-          sx={{
-            p: 2,
-            backgroundColor: 'background.paper',
-            color: 'text.primary',
-          }}
-        >
-          <Typography variant="body1">
-            You have no pending tasks. Enjoy your day!
-          </Typography>
-        </Paper>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} md={3}>
+            <Card
+              sx={{
+                backgroundColor: 'success.light',
+                color: 'success.contrastText',
+              }}
+            >
+              <CardContent>
+                <Box display="flex" alignItems="center">
+                  <AssignmentTurnedIn sx={{ fontSize: 40, mr: 2 }} />
+                  <Box>
+                    <Typography variant="h6">Completed</Typography>
+                    <Typography variant="h4">{completedTasks}</Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Card
+              sx={{
+                backgroundColor: 'warning.light',
+                color: 'warning.contrastText',
+              }}
+            >
+              <CardContent>
+                <Box display="flex" alignItems="center">
+                  <AssignmentTurnedIn sx={{ fontSize: 40, mr: 2 }} />
+                  <Box>
+                    <Typography variant="h6">Pending</Typography>
+                    <Typography variant="h4">{pendingTasks}</Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+          {/* Add more statistics cards as needed */}
+        </Grid>
+      </Box>
+
+      {/* Recent Tasks */}
+      <Box>
+        <Typography variant="h5" gutterBottom>
+          Recent Tasks
+        </Typography>
+        {tasks.length === 0 ? (
+          <Paper
+            sx={{
+              p: 2,
+              backgroundColor: 'background.paper',
+              color: 'text.secondary',
+            }}
+          >
+            <Typography variant="body1">
+              You have no recent tasks. Start by adding a new task!
+            </Typography>
+          </Paper>
+        ) : (
+          <Grid container spacing={2}>
+            {tasks.map((task) => (
+              <Grid item xs={12} sm={6} md={4} key={task.id}>
+                <Card
+                  sx={{
+                    backgroundColor: 'background.paper',
+                    color: 'text.primary',
+                    transition: 'transform 0.2s',
+                    '&:hover': {
+                      transform: 'scale(1.02)',
+                    },
+                  }}
+                >
+                  <CardContent>
+                    <Box display="flex" alignItems="center" mb={1}>
+                      <Assignment sx={{ mr: 1, color: 'primary.main' }} />
+                      <Typography variant="h6">{task.name}</Typography>
+                    </Box>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                      Status: {task.status || 'Pending'}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                      Due Date: {task.dueDate || 'N/A'}
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      fullWidth
+                      sx={{ mt: 2 }}
+                      onClick={() => navigate(`/tasks/${task.id}`)}
+                    >
+                      View Details
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
     </Box>
   );

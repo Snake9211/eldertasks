@@ -1,5 +1,3 @@
-// src/global.d.ts
-
 // Declare a module for Firebase configuration
 declare module '../firebase' {
     export const firebaseConfig: {
@@ -16,12 +14,9 @@ declare module '../firebase' {
     export const db: any; // Firestore instance
 }
 
-// If you are using Firestore or other Firebase services
 declare module 'firebase/firestore' {
     import { Firestore } from 'firebase/firestore';
     export const firestore: Firestore;
     export * from '@firebase/firestore';
 
 }
-
-// Declare additional Firebase modules as needed

@@ -1,5 +1,5 @@
 import App from "./App";
-import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
+import { BrowserRouter } from "react-router-dom";
 import { FamilyProvider } from "./context/FamilyContext";
 import React from "react";
 import ReactDOM from "react-dom/client";

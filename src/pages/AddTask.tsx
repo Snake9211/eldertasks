@@ -9,10 +9,8 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
-import { getFunctions, httpsCallable } from "firebase/functions";
 
 import { AssignmentTurnedIn } from "@mui/icons-material";
-import { Task } from "../types";
 import { db } from "../firebase";
 import { useUser } from "../context/UserContext";
 
@@ -49,7 +47,7 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded }) => {
         name: name,
         description: description,
         familyId: currentUser.familyId,
-        status: "incomplete", // Define status as specific strings
+        status: "Pending",
         createdAt: Date.now() // Unix time in seconds
       }
   
