@@ -62,6 +62,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
       setCurrentUser(user);
+      console.log('setting current user', user);
       setIsLoading(false);
     });
     return unsubscribe;

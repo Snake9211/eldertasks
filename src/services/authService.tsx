@@ -105,6 +105,7 @@ export const onAuthStateChangedListener = (callback: (user: CustomUser | null) =
       if (user) {
         // Fetch full user data, including Firestore fields, if available
         const userWithProfile = await fetchUserProfile();
+        console.log('on authstatechange', user);
         callback(userWithProfile as CustomUser); // Provide user data with Firestore fields to the callback
       } else {
         callback(null);

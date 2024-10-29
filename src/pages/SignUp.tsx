@@ -1,10 +1,14 @@
+// src/pages/SignUp.tsx
+
 import {
   Alert,
   Box,
   Button,
   Container,
+  Alert as MuiAlert,
   Link as MuiLink,
   Paper,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -17,7 +21,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 
 import { auth } from "../firebase";
 import { createUserProfile } from "../services/authService";
@@ -35,10 +39,20 @@ const SignUp: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: "success" | "error";
+  }>({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
   // Function to generate a random family code
   function generateFamilyCode(length: number): string {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let code = '';
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let code = "";
     for (let i = 0; i < length; i++) {
       code += chars.charAt(Math.floor(Math.random() * chars.length));
     }
@@ -50,11 +64,11 @@ const SignUp: React.FC = () => {
     familiesRef: CollectionReference,
     length: number
   ): Promise<string> {
-    let code = '';
+    let code = "";
     let exists = true;
     while (exists) {
       code = generateFamilyCode(length);
-      const codeQuery = query(familiesRef, where('familyCode', '==', code));
+      const codeQuery = query(familiesRef, where("familyCode", "==", code));
       const codeSnapshot = await getDocs(codeQuery);
       exists = !codeSnapshot.empty;
     }
@@ -81,7 +95,10 @@ const SignUp: React.FC = () => {
 
       if (familyCodeInput) {
         // User provided a family code, attempt to join the family
-        const codeQuery = query(familiesRef, where("familyCode", "==", familyCodeInput));
+        const codeQuery = query(
+          familiesRef,
+          where("familyCode", "==", familyCodeInput)
+        );
         const codeSnapshot = await getDocs(codeQuery);
 
         if (!codeSnapshot.empty) {
@@ -118,21 +135,60 @@ const SignUp: React.FC = () => {
       }
 
       // Create user profile in Firestore with additional info
-      await createUserProfile( user.email as string, user.displayName as string, user.uid, { familyId: familyId, displayName: displayName });      
+      await createUserProfile(
+        user.email as string,
+        displayName, // Use the entered displayName
+        user.uid,
+        { familyId: familyId, displayName: displayName }
+      );
       console.log("User profile created:", user.uid);
 
-      navigate("/"); // Redirect to the home page after successful sign-up
-    } catch (error) {
-      const errorMsg =
-        (error as Error).message || "An error occurred. Please try again.";
+      // Automatically log in the user by updating UserContext
+      // This should be handled by your UserContext's onAuthStateChangedListener
+      // So, you can navigate to Home and the context will update
+      setSnackbar({
+        open: true,
+        message: "Account created successfully!",
+        severity: "success",
+      });
+      window.location.reload();
+    } catch (error: any) {
+      let errorMsg = "An error occurred. Please try again.";
+      if (error.code === "auth/email-already-in-use") {
+        errorMsg = "Email is already in use.";
+      } else if (error.code === "auth/weak-password") {
+        errorMsg = "Password is too weak.";
+      }
       setErrorMessage(errorMsg);
+      setSnackbar({
+        open: true,
+        message: errorMsg,
+        severity: "error",
+      });
       console.error("Sign-up error:", error);
     }
+  };
+
+  // Handle form submission
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Prevent default form submission
+    handleSignUp(); // Call the signup handler
   };
 
   // Function to redirect to login page
   const handleLoginRedirect = () => {
     navigate("/login");
+  };
+
+  // Handle Snackbar close
+  const handleCloseSnackbar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbar({ ...snackbar, open: false });
   };
 
   return (
@@ -146,7 +202,12 @@ const SignUp: React.FC = () => {
           color: "text.primary",
         }}
       >
-        <Typography component="h1" variant="h5" align="center" gutterBottom>
+        <Typography
+          component="h1"
+          variant="h5"
+          align="center"
+          gutterBottom
+        >
           Create an Account
         </Typography>
         {errorMessage && (
@@ -154,7 +215,7 @@ const SignUp: React.FC = () => {
             {errorMessage}
           </Alert>
         )}
-        <Box component="form" noValidate>
+        <Box component="form" noValidate onSubmit={handleSubmit}>
           <TextField
             margin="normal"
             required
@@ -222,11 +283,10 @@ const SignUp: React.FC = () => {
             }}
           />
           <Button
-            type="button"
+            type="submit" // Change to submit type
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={handleSignUp}
           >
             Sign Up
           </Button>
@@ -242,6 +302,22 @@ const SignUp: React.FC = () => {
           </Typography>
         </Box>
       </Paper>
+
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <MuiAlert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </MuiAlert>
+      </Snackbar>
     </Container>
   );
 };

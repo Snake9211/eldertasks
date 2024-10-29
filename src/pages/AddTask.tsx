@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 import { AssignmentTurnedIn } from "@mui/icons-material";
 import { db } from "../firebase";
@@ -47,8 +47,8 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded }) => {
         name: name,
         description: description,
         familyId: currentUser.familyId,
-        status: "Pending",
-        createdAt: Date.now() // Unix time in seconds
+        status: 'Pending',
+        createdAt: serverTimestamp() // Use Firebase server timestamp
       }
   
       const taskRef = await addDoc(tasksCollection, newTask);

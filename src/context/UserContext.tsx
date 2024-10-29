@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { fetchUserProfile, onAuthStateChangedListener } from "../services/authService";
 
 import { CustomUser } from "../types";
+import { auth } from "../firebase";
+import { fetchUserProfile } from "../services/authService";
+import { onAuthStateChanged } from "firebase/auth";
 
 interface UserContextType {
   currentUser: CustomUser | null;
@@ -14,7 +16,7 @@ export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
   const [currentUser, setCurrentUser] = useState<CustomUser | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener(async (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const fullProfile = await fetchUserProfile();
         setCurrentUser(fullProfile);

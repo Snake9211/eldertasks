@@ -1,3 +1,5 @@
+// src/pages/TaskOverview.tsx
+
 import {
   Alert,
   Box,
@@ -10,15 +12,32 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
+  Snackbar,
   Typography,
 } from '@mui/material';
 import { Assignment, CheckCircle, Delete, EventNote } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { SuggestedTask, Task } from '../types';
-import { addDoc, collection, deleteDoc, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 
+import { SelectChangeEvent } from '@mui/material';
 import { db } from '../firebase'; // Adjust the path as needed
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
@@ -31,6 +50,9 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [suggestedTasks, setSuggestedTasks] = useState<SuggestedTask[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  // Filter State
+  const [filterOption, setFilterOption] = useState<string>('All'); // 'All', 'Pending', 'Completed'
 
   // State for Confirmation Dialog (Adding Suggested Task)
   const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false);
@@ -48,50 +70,70 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
   const [openCompleteDialog, setOpenCompleteDialog] = useState<boolean>(false);
   const [taskToComplete, setTaskToComplete] = useState<Task | null>(null);
 
+  // Snackbar State for Feedback
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: 'success' | 'error';
+  }>({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
+
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        if (!currentUser) {
-          setLoading(false);
-          return;
-        }
+    const fetchTasks = () => {
+      if (!currentUser) {
+        setLoading(false);
+        return;
+      }
 
-        // Fetch Current Tasks
-        const tasksRef = collection(db, 'Tasks');
-        const q = query(
-          tasksRef,
-          where('familyId', '==', currentUser.familyId) // Fetch tasks for specific family
-        );
-        const querySnapshot = await getDocs(q);
+      const tasksRef = collection(db, 'Tasks');
+      const q = query(tasksRef, where('familyId', '==', currentUser.familyId));
 
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const fetchedTasks: Task[] = querySnapshot.docs.map((doc) => ({
           id: doc.id,
-          ...(doc.data() as Omit<Task, 'id'>), // Cast doc.data() to Task without id
+          ...(doc.data() as Omit<Task, 'id'>),
         }));
+        setTasks(fetchedTasks);
+        setLoading(false);
+      }, (error) => {
+        console.error('Error fetching tasks: ', error);
+        setError('Failed to load tasks.');
+        setLoading(false);
+      });
 
-        // Fetch Suggested Tasks
+      return () => unsubscribe();
+    };
+
+    fetchTasks();
+  }, [familyId, currentUser]);
+
+  // Fetch Suggested Tasks Once
+  useEffect(() => {
+    const fetchSuggestedTasks = async () => {
+      try {
+        if (!currentUser) return;
+
         const suggestedTasksRef = collection(db, 'SuggestedTasks');
         const suggestedTasksQuery = query(suggestedTasksRef);
         const suggestedTasksSnapshot = await getDocs(suggestedTasksQuery);
         const fetchedSuggestedTasks: SuggestedTask[] = suggestedTasksSnapshot.docs.map((doc) => ({
           id: doc.id,
-          ...(doc.data() as Omit<SuggestedTask, 'id'>), // Cast doc.data() to SuggestedTask without id
+          ...(doc.data() as Omit<SuggestedTask, 'id'>),
         }));
 
-        setTasks(fetchedTasks);
         setSuggestedTasks(fetchedSuggestedTasks);
-        console.log('Fetched current tasks:', fetchedTasks);
         console.log('Fetched suggested tasks:', fetchedSuggestedTasks);
       } catch (error) {
-        console.error('Error fetching tasks: ', error);
-        setError('Failed to load tasks.');
-      } finally {
-        setLoading(false);
+        console.error('Error fetching suggested tasks:', error);
+        setError('Failed to load suggested tasks.');
       }
     };
 
-    fetchTasks();
-  }, [familyId, currentUser]);
+    fetchSuggestedTasks();
+  }, [currentUser]);
 
   // Function to handle viewing task details
   const handleViewDetails = (taskId: string) => {
@@ -127,28 +169,38 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
       const newTask: Omit<Task, 'id'> = {
         name: task.name,
         ...(task.dueDate ? { dueDate: task.dueDate } : {}),
-        ...(typeof task.fee === 'number' ? { fee: task.fee } : {}),
+        ...(typeof task.estimated_cost === 'number' ? { fee: task.estimated_cost } : {}),
         description: task.description || '',
         familyId: currentUser?.familyId as string, // Ensure familyId is a string
         isSuggested: false,
         status: 'Pending', // Set default status
-        createdAt: new Date(), // Use Firestore Timestamp or serverTimestamp() if desired
+        createdAt: serverTimestamp(), // Use serverTimestamp
       };
 
       const tasksRef = collection(db, 'Tasks');
       const docRef = await addDoc(tasksRef, newTask);
 
       // Update local state to reflect the new task
-      setTasks((prev) => [...prev, { id: docRef.id, ...newTask }]);
+      setTasks((prev) => [...prev, { id: docRef.id, ...newTask, createdAt: new Date() } as Task]); // Temporarily use new Date()
 
       // Remove the task from suggestedTasks state
       setSuggestedTasks((prev) => prev.filter((t) => t.id !== task.id));
 
       console.log(`Task "${task.name}" has been added to your current tasks.`);
+      setSnackbar({
+        open: true,
+        message: `Task "${task.name}" added successfully!`,
+        severity: 'success',
+      });
       setError(null); // Clear any existing errors
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding suggested task:', error);
       setError('Failed to add suggested task.');
+      setSnackbar({
+        open: true,
+        message: 'Failed to add suggested task.',
+        severity: 'error',
+      });
     } finally {
       handleCloseConfirmDialog();
     }
@@ -184,10 +236,20 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
       setTasks((prev) => prev.filter((t) => t.id !== taskToDelete.id));
 
       console.log(`Task "${taskToDelete.name}" has been deleted.`);
+      setSnackbar({
+        open: true,
+        message: `Task "${taskToDelete.name}" deleted successfully!`,
+        severity: 'success',
+      });
       setError(null);
     } catch (error) {
       console.error('Error deleting task:', error);
       setError('Failed to delete task.');
+      setSnackbar({
+        open: true,
+        message: 'Failed to delete task.',
+        severity: 'error',
+      });
     } finally {
       handleCloseDeleteDialog();
     }
@@ -221,13 +283,39 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
       );
 
       console.log(`Task "${taskToComplete.name}" has been marked as completed.`);
+      setSnackbar({
+        open: true,
+        message: `Task "${taskToComplete.name}" marked as completed!`,
+        severity: 'success',
+      });
       setError(null);
     } catch (error) {
       console.error('Error marking task as complete:', error);
       setError('Failed to mark task as complete.');
+      setSnackbar({
+        open: true,
+        message: 'Failed to mark task as complete.',
+        severity: 'error',
+      });
     } finally {
       handleCloseCompleteDialog();
     }
+  };
+
+  // Handler for filter option change
+  const handleFilterChange = (event: SelectChangeEvent<string>, child: React.ReactNode) => {
+    setFilterOption(event.target.value);
+  };
+
+  // Handler to close Snackbar
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  // Function to get filtered tasks based on filterOption
+  const getFilteredTasks = () => {
+    if (filterOption === 'All') return tasks;
+    return tasks.filter((task) => task.status === filterOption);
   };
 
   if (loading) {
@@ -259,7 +347,24 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
         Upcoming Tasks
       </Typography>
 
-      {tasks.length === 0 ? (
+      {/* Filter Controls */}
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <FormControl variant="outlined" size="small" sx={{ minWidth: 200 }}>
+          <InputLabel id="filter-label">Filter By Status</InputLabel>
+          <Select
+            labelId="filter-label"
+            value={filterOption}
+            onChange={handleFilterChange}
+            label="Filter By Status"
+          >
+            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="Pending">Pending</MenuItem>
+            <MenuItem value="Completed">Completed</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+
+      {getFilteredTasks().length === 0 ? (
         <Paper
           sx={{
             p: 3,
@@ -267,37 +372,50 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
             color: 'text.secondary',
           }}
         >
-          <Typography>No upcoming tasks found.</Typography>
+          <Typography>No tasks found for the selected filter.</Typography>
         </Paper>
       ) : (
         <Grid container spacing={2}>
-          {tasks.map((task) => (
+          {getFilteredTasks().map((task) => (
             <Grid item xs={12} md={6} key={task.id}>
               <Card
                 sx={{
-                  backgroundColor: 'background.paper',
-                  color: 'text.primary',
+                  backgroundColor: task.status === 'Completed' ? 'success.light' : 'background.paper',
+                  color: task.status === 'Completed' ? 'text.primary' : 'text.primary',
                   transition: 'transform 0.2s',
                   '&:hover': {
                     transform: 'scale(1.02)',
                   },
+                  position: 'relative',
                 }}
               >
+                {task.status === 'Completed' && (
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      bgcolor: 'rgba(76, 175, 80, 0.05)', // Even lighter green overlay
+                      pointerEvents: 'none',
+                    }}
+                  />
+                )}
                 <CardContent>
                   <Box display="flex" alignItems="center" mb={1}>
                     <Assignment sx={{ mr: 1, color: 'primary.main' }} />
                     <Typography variant="h5">{task.name}</Typography>
                   </Box>
-                  {/* Removed the description from the initial view */}
                   <Box display="flex" alignItems="center" mt={2}>
                     <EventNote sx={{ mr: 1, color: 'secondary.main' }} />
                     <Typography variant="body2">
                       Status: {task.status || 'Incomplete'}
                     </Typography>
                   </Box>
-                  {task.fee !== undefined && (
+                  {task.estimated_cost !== undefined && (
                     <Typography variant="body2" mt={1}>
-                      Additional fee: ${task.fee}
+                      Additional fee: ${task.estimated_cost}
                     </Typography>
                   )}
                   <Button
@@ -309,7 +427,7 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
                   >
                     View Details
                   </Button>
-                  {/* New Buttons for Delete and Mark Complete */}
+                  {/* Buttons for Delete and Mark Complete */}
                   <Box display="flex" justifyContent="space-between" mt={2}>
                     <Button
                       variant="contained"
@@ -372,16 +490,15 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
                       <Assignment sx={{ mr: 1, color: 'secondary.main' }} />
                       <Typography variant="h5">{task.name}</Typography>
                     </Box>
-                    {/* Removed the description from the initial view */}
                     <Box display="flex" alignItems="center" mt={2}>
                       <EventNote sx={{ mr: 1, color: 'secondary.main' }} />
                       <Typography variant="body2">
-                        Suggested by: {task.dueDate || 'N/A'}
+                        Suggested by: { 'Unknown' }
                       </Typography>
                     </Box>
-                    {task.fee !== undefined && (
+                    {task.estimated_cost !== undefined && (
                       <Typography variant="body2" mt={1}>
-                        Additional fee: ${task.fee}
+                        Additional fee: ${task.estimated_cost}
                       </Typography>
                     )}
                     <Button
@@ -444,10 +561,16 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
                 <strong>Description:</strong> {selectedTaskDetails.description || 'No description provided.'}
               </Typography>
               <Typography variant="body1" gutterBottom>
-                <strong>Due Date:</strong> {selectedTaskDetails.dueDate || 'N/A'}
+                <strong>Due Date:</strong>{' '}
+                {selectedTaskDetails.dueDate
+                  ? new Date(selectedTaskDetails.dueDate).toLocaleDateString()
+                  : 'N/A'}
               </Typography>
               <Typography variant="body1" gutterBottom>
-                <strong>Additional Fee:</strong> {selectedTaskDetails.fee !== undefined ? `$${selectedTaskDetails.fee}` : 'N/A'}
+                <strong>Additional Fee:</strong>{' '}
+                {selectedTaskDetails.estimated_cost !== undefined
+                  ? `$${selectedTaskDetails.estimated_cost}`
+                  : 'N/A'}
               </Typography>
               <Typography variant="body1" gutterBottom>
                 <strong>Status:</strong> {selectedTaskDetails.status || 'Pending'}
@@ -505,6 +628,18 @@ const TaskOverview: React.FC<{ familyId: string }> = ({ familyId }) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Snackbar for Feedback */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

@@ -1,5 +1,3 @@
-// src/pages/Home.tsx
-
 import { Add, Assignment, AssignmentTurnedIn, List } from '@mui/icons-material';
 import {
   Alert,
@@ -13,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, query, serverTimestamp, where } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import { Task } from '../types';
 import { db } from '../firebase';
@@ -73,7 +71,7 @@ const Home: React.FC = () => {
   }, [currentUser]);
 
   const handleAddTask = () => {
-    navigate('/tasks/create'); // Navigate to the task creation page
+    navigate('/add-task'); // Navigate to the task creation page
   };
 
   const handleViewAllTasks = () => {
@@ -234,17 +232,8 @@ const Home: React.FC = () => {
                       Status: {task.status || 'Pending'}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>
-                      Due Date: {task.dueDate || 'N/A'}
-                    </Typography>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      fullWidth
-                      sx={{ mt: 2 }}
-                      onClick={() => navigate(`/tasks/${task.id}`)}
-                    >
-                      View Details
-                    </Button>
+                      Due Date: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'N/A'}
+                    </Typography>                
                   </CardContent>
                 </Card>
               </Grid>

@@ -20,7 +20,7 @@ export interface Task {
     name: string;
     dueDate?: string;
     status: string;
-    fee?: number;
+    estimated_cost?: number;
     description?: string;
     familyId?: string;       // Added to associate the task with a family
     isSuggested?: boolean;   // Added to differentiate suggested tasks
@@ -30,7 +30,7 @@ export interface Task {
     id: string;
     name: string;
     dueDate?: string;
-    fee?: number;
+    estimated_cost?: number;
     description?: string;
     isSuggested: boolean;    // Typically always true for suggested tasks
   }
